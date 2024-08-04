@@ -1,0 +1,53 @@
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 15px 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .subtitle{
+    padding-bottom: 10px;
+  }
+  .menus {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+  
+    mat-form-field {
+      margin-bottom: 13px;
+    }
+  
+    input {
+      margin: 0;
+  
+    }
+  
+    button {
+      align-self: center;
+    }
+  }
+  
+  .error-message {
+    color: red;
+    padding-bottom: 15px;
+  }
+  
+  .footer {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  span {
+    font-size: 1rem;
+    font-weight: 300;
+  }

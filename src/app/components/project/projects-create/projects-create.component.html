@@ -1,0 +1,29 @@
+<h2 mat-dialog-title>Criar novo Projeto</h2>
+<div mat-dialog-content >
+
+    <form [formGroup]="novoProjetoForm">
+        <mat-form-field class="input">
+            <input type="text" matInput formControlName="nome" placeholder="Nome do Projeto" name="Nome">
+        </mat-form-field>
+
+        <mat-form-field class="input">
+            <label for="descricao">Observações: </label>
+            <textarea matInput formControlName="descricao" placeholder="Detalhes sobre o projeto" name="observacoes"></textarea>
+        </mat-form-field>
+        <div class="datas">
+        <mat-form-field>
+            <label for="dataInicio">Data Inicio: </label>
+            <input type="date" matInput formControlName="dataInicio" placeholder="Data de Início" name="dataInicio">
+        </mat-form-field>
+        
+        <mat-form-field>
+            <label for="dataFim">Data fim: </label>
+            <input type="date" matInput formControlName="dataFim" placeholder="Data fim" name="dataFim">
+        </mat-form-field>
+    </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancelar</button>
+    <button mat-button type="submit" (click)="salvarProjeto()"  cdkFocusInitial color="primary">Salvar</button>
+</div>

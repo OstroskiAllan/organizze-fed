@@ -1,0 +1,29 @@
+<div class="boody">
+    <mat-sidenav-container class="sidenav-container">
+        <mat-sidenav #drawer class="sidenav" fixedInViewport
+            [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+            [mode]="(isHandset$ | async) ? 'over' : 'side'"
+            [opened]="(isHandset$ | async) === false">
+          <mat-nav-list>
+            <a mat-list-item routerLink="/home">
+                <i class="material-icons v-middle">home</i>
+                    Início
+            </a>
+            <a mat-list-item routerLink="/forgot-password">
+                <i class="material-icons v-middle">dashboard</i>
+                   Projetos
+            </a>
+            <a mat-list-item routerLink="/home">
+                <i class="material-icons v-middle">people</i>
+                   Equipe
+            </a>
+            <a mat-list-item routerLink="/home">
+                <i class="material-icons v-middle">book</i>
+                  Agenda
+            </a>      
+          </mat-nav-list>
+        </mat-sidenav>
+       
+      </mat-sidenav-container>
+    </div>
+    

@@ -1,0 +1,29 @@
+<mat-toolbar class="header mat-elevation-z4">
+    <span>
+        <a routerLink="/home">
+            <img class="logo" src="https://i.pinimg.com/originals/c1/b8/e8/c1b8e8b164bc51ac895474ff33498c3b.png" alt="logo">
+        </a>
+    </span>
+    
+    <span>
+        <mat-card-title routerLink="/home" class="title">
+            Organizze
+          </mat-card-title>
+    </span>
+
+  
+        <!-- ... -->
+        <div class="user">
+            <button mat-button [matMenuTriggerFor]="menu">Olá! {{ this.primeiroNome }} <i class="material-icons v-middle">expand_more</i> </button>
+            <mat-menu #menu="matMenu" >
+                <button mat-menu-item (click)="openDialog('task')">Editar Perfil</button>
+                <button mat-menu-item routerLink="/change-password">Trocar Senha</button>
+                <button mat-menu-item (click)="logout()">Logout</button>
+                <!-- Adicione mais itens de menu aqui, se necessário -->
+            </mat-menu>
+        </div>
+    <!-- <div class="user">
+        <a class="nome">Olá! {{ this.primeiroNome }}</a>
+        <a (click)="logout()">Logout</a>
+    </div> -->
+</mat-toolbar>

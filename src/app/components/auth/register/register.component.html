@@ -1,1 +1,53 @@
-<p>register works!</p>
+<mat-card class="mat-elevation-z3 container">
+    <mat-card-title class="title">
+      Organizze
+    </mat-card-title>
+    <mat-card-subtitle class="subtitle mb-3">
+      Efetue seu cadastro!
+    </mat-card-subtitle>
+  
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input matInput formControlName="nome" type="text" placeholder="Nome">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="Email">
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Senha" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Confirme a senha</mat-label>
+        <input matInput formControlName="confirmPassword" type="password" placeholder="Senha" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="registerForm.hasError('passwordMismatch')">
+          As senhas não coincidem
+        </mat-error>
+      </mat-form-field>
+      
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+      <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+  
+      <div class="menus">
+        <a routerLink="">Voltar</a>
+      </div>
+    </form>
+  
+  </mat-card>
+  
+  <mat-toolbar class="footer">
+    <span>
+        Desenvolvido por <strong>Ostroski!</strong>
+    </span>
+  
+  </mat-toolbar>

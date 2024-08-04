@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="content">
+    <mat-card class="dash mat-elevation-z3">
+
+        <mat-card-title class="title">
+            Dashboard!
+        </mat-card-title>
+        <mat-card-subtitle class="subtitle">
+            Sistema para teste de tabelas de clica e arrasta!
+        </mat-card-subtitle>
+
+        <button mat-raised-button (click)="openDialog()" color="primary">
+            Novo Projeto
+        </button>
+    </mat-card>
+
+    <br>
+    
+    <mat-card>
+        <app-projects-read></app-projects-read>
+    </mat-card>
+
+
+</div>
+<nav-bar></nav-bar>
+<app-footer></app-footer>

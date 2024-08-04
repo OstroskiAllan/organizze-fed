@@ -1,0 +1,19 @@
+// .footer {
+//     position: static;
+  
+//     justify-content: center;
+//     width: 100%;
+// }
+.footer {
+    z-index: 3;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    bottom: 0.1px;
+  }
+
+span{
+    font-size: 1rem;
+    font-weight: 300;
+}
