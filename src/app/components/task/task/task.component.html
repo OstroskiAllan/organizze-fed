@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Criar nova Tarefa</h2>
+<div mat-dialog-content>
+
+    <form [formGroup]="novaTarefaForm">
+
+        <mat-form-field class="input" appearance="fill">
+            <mat-label>Nome do Tarefa</mat-label>
+            <input matInput formControlName="nome" placeholder="Nome do Tarefa">
+        </mat-form-field>
+
+        <mat-form-field class="input" appearance="fill">
+            <mat-label>Observações</mat-label>
+            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre o Tarefa"></textarea>
+        </mat-form-field>
+
+        <div class="datas">
+            <mat-form-field appearance="fill">
+                <mat-label>Data Inicio</mat-label>
+                <input matInput type="date" formControlName="dataInicio" placeholder="Data de Início">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Data Fim</mat-label>
+                <input matInput type="date" formControlName="dataFim" placeholder="Data Fim">
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Cancelar</button>
+    <button mat-button type="submit" (click)="salvarTarefa()" [disabled]="novaTarefaForm.invalid">Salvar</button>
+</div>

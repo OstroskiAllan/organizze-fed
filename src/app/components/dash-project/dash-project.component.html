@@ -1,0 +1,50 @@
+<header></header>
+
+<nav class="content">
+    <mat-card class="dash mat-elevation-z3">
+
+        <mat-card-title class="title">{{ projeto.nome }}</mat-card-title>
+        <mat-card-subtitle class="subtitle">Descrição: {{ projeto.descricao }}</mat-card-subtitle>
+        <p *ngIf="projeto.dataInicio">Data de Início: {{ projeto.dataInicio }}</p>
+        <p *ngIf="projeto.dataFim">Data de Início: {{ projeto.dataFim}}</p>
+        <br>
+
+        <div class="botoes">
+        <button mat-raised-button (click)="openDialog('task')" color="primary">
+            Nova task
+        </button>
+
+        <button mat-raised-button (click)="openDialog('equipe')" color="primary">
+            Equipe
+        </button>
+        </div>
+    </mat-card>
+    <br>
+
+    <div class="container">
+        <h2>Done</h2>
+
+        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="todoList"
+            class="list" (cdkDropListDropped)="drop($event)">
+            <div class="list-item" *ngFor="let item of done" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>To do</h2>
+
+        <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="doneList"
+            class="list" (cdkDropListDropped)="drop($event)">
+            <div class="list-item" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Workinggg</h2>
+
+        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="work" [cdkDropListConnectedTo]="todoList"
+            class="list" (cdkDropListDropped)="drop($event)">
+            <div class="list-item" *ngFor="let item of work" cdkDrag>{{item}}</div>
+        </div>
+    </div>
+
+</nav>
+<nav-bar></nav-bar>

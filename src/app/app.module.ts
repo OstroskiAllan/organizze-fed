@@ -38,6 +38,9 @@ import { ProjectsReadComponent } from './components/project/projects-read/projec
 import { ProjectsCreateComponent } from './components/project/projects-create/projects-create.component';
 import { ProjectsUpdateComponent } from './components/project/projects-update/projects-update.component';
 import { ModalConfirmacaoComponent } from './views/template/modal-confirmacao/modal-confirmacao.component';
+import { DashProjectComponent } from './components/dash-project/dash-project.component';
+import { TaskComponent } from './components/task/task/task.component';
+import { TeamComponent } from './components/team/team/team.component';
 
 
 
@@ -57,7 +60,10 @@ import { ModalConfirmacaoComponent } from './views/template/modal-confirmacao/mo
     ProjectsReadComponent,
     ProjectsCreateComponent,
     ProjectsUpdateComponent,
-    ModalConfirmacaoComponent
+    ModalConfirmacaoComponent,
+    TaskComponent,
+    DashProjectComponent,
+    TeamComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,48 @@
+/* Estilos para o modal de equipe */
+.equipe-modal {
+    width: 500px;
+  }
+  
+  /* Estilos para o título do modal */
+  .equipe-modal-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para o formulário de adicionar membro */
+  .add-member-form {
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos para os campos do formulário */
+  .add-member-input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos para o botão de adicionar membro */
+  .add-member-button {
+    margin-right: 10px;
+  }
+  
+  /* Estilos para a tabela de membros */
+  .member-table {
+    width: 100%;
+  }
+  
+  /* Estilos para as células da tabela */
+  .member-cell {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  /* Estilos para o botão de excluir membro */
+  .delete-member-button {
+    color: red;
+  }
+  
+  /* Estilos para o botão de editar cargo */
+  .edit-cargo-button {
+    color: blue;
+  }
+  

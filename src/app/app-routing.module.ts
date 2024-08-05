@@ -6,6 +6,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './core/guard/AuthGuard';
 import { ProjectsComponent } from './components/project/projects/projects.component';
+import { DashProjectComponent } from './components/dash-project/dash-project.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -13,8 +14,8 @@ const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard]  },
-
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+  { path: "project/:id", component: DashProjectComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

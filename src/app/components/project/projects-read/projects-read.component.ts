@@ -12,7 +12,7 @@ import { ModalConfirmacaoComponent } from 'src/app/views/template/modal-confirma
   styleUrls: ['./projects-read.component.scss']
 })
 export class ProjectsReadComponent  implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['nome', 'descricao', 'data_criacao', 'data_inicio', 'data_fim', 'actions'];
+  displayedColumns: string[] = ['nome', 'descricao', 'data_inicio', 'data_fim', 'actions']; // adicionar depois a data criaçao
   projetos: any[] = [];
   totalItems!: number;
   @ViewChild(MatSort) sort: MatSort | undefined;
@@ -69,7 +69,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
   }
 
   abrirDetalhes(projetoId: number): void{
-    this.router.navigate(['/projeto/', projetoId]);
+    this.router.navigate(['/project/', projetoId]);
   }
 
   editarProjeto(projetoId: number): void {
@@ -95,7 +95,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
       switch (this.sort && this.sort.active) { // Verifica se sort.active é definido
         case 'nome': return ProjectsReadComponent.compare(a.nome, b.nome, isAsc);
         case 'descricao': return ProjectsReadComponent.compare(a.descricao, b.descricao, isAsc);
-        case 'data_criacao': return ProjectsReadComponent.compare(a.data_criacao, b.data_criacao, isAsc);
+        //case 'data_criacao': return ProjectsReadComponent.compare(a.data_criacao, b.data_criacao, isAsc);
         case 'data_inicio': return ProjectsReadComponent.compare(a.data_inicio, b.data_inicio, isAsc);
         case 'data_fim': return ProjectsReadComponent.compare(a.data_fim, b.data_fim, isAsc);
         default: return 0;
