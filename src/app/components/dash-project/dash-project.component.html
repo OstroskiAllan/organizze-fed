@@ -1,50 +1,44 @@
-<header></header>
+<app-header></app-header>
+<nav class="content dash">
 
-<nav class="content">
-    <mat-card class="dash mat-elevation-z3">
 
-        <mat-card-title class="title">{{ projeto.nome }}</mat-card-title>
-        <mat-card-subtitle class="subtitle">Descrição: {{ projeto.descricao }}</mat-card-subtitle>
-        <p *ngIf="projeto.dataInicio">Data de Início: {{ projeto.dataInicio }}</p>
-        <p *ngIf="projeto.dataFim">Data de Início: {{ projeto.dataFim}}</p>
-        <br>
+    <div class="dash1">
+        <mat-card class="mat-elevation-z3 card">
 
-        <div class="botoes">
-        <button mat-raised-button (click)="openDialog('task')" color="primary">
-            Nova task
-        </button>
+            <mat-card-title class="title">Projeto: <h3>{{projeto.nome}}</h3>
 
-        <button mat-raised-button (click)="openDialog('equipe')" color="primary">
-            Equipe
-        </button>
-        </div>
-    </mat-card>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+
+            <mat-card-subtitle class="subtitle">Descrição: {{projeto.descricao}} </mat-card-subtitle>
+            <mat-card-subtitle class="subtitle">Data de Início: </mat-card-subtitle>
+            <mat-card-subtitle class="subtitle">Data de Fim: </mat-card-subtitle>
+           
+            <br>
+
+            <button mat-raised-button color="primary">
+                Nova tarefa
+            </button>
+        </mat-card>
+        <mat-card class="mat-elevation-z3 card">
+            <mat-card-title class="title">
+                Equipe:
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-subtitle class="subtitle">
+                Atual membros da equipe e seus cargos:
+            </mat-card-subtitle>
+
+            <button mat-raised-button style="margin-top: 110px" (click)="openDialog('equipe')" color="primary">
+                Editar
+            </button>
+
+        </mat-card>
+    </div>
     <br>
-
-    <div class="container">
-        <h2>Done</h2>
-
-        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="todoList"
-            class="list" (cdkDropListDropped)="drop($event)">
-            <div class="list-item" *ngFor="let item of done" cdkDrag>{{item}}</div>
-        </div>
-    </div>
-    <div class="container">
-        <h2>To do</h2>
-
-        <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="doneList"
-            class="list" (cdkDropListDropped)="drop($event)">
-            <div class="list-item" *ngFor="let item of todo" cdkDrag>{{item}}</div>
-        </div>
-    </div>
-    <div class="container">
-        <h2>Workinggg</h2>
-
-        <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="work" [cdkDropListConnectedTo]="todoList"
-            class="list" (cdkDropListDropped)="drop($event)">
-            <div class="list-item" *ngFor="let item of work" cdkDrag>{{item}}</div>
-        </div>
-    </div>
-
+    <mat-card>
+        <app-projects-read></app-projects-read>
+    </mat-card>
 </nav>
 <nav-bar></nav-bar>
+<app-footer></app-footer>

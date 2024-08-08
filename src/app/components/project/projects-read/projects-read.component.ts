@@ -1,3 +1,5 @@
+import { Projeto } from './../../../models/projeto.model';
+import { UsuarioProjeto } from './../../../models/usuarioprojeto.model';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -5,6 +7,8 @@ import { MatSort } from '@angular/material/sort';
 import { Router } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { ModalConfirmacaoComponent } from 'src/app/views/template/modal-confirmacao/modal-confirmacao.component';
+import { AuthService } from '../../auth/auth.service';
+import { forkJoin, map } from 'rxjs';
 
 @Component({
   selector: 'app-projects-read',
@@ -13,16 +17,22 @@ import { ModalConfirmacaoComponent } from 'src/app/views/template/modal-confirma
 })
 export class ProjectsReadComponent  implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['nome', 'descricao', 'data_inicio', 'data_fim', 'actions']; // adicionar depois a data criaçao
+  projectColumns: string[] = ['nome', 'descricao', 'cargo'];
   projetos: any[] = [];
+  projetosPart:  UsuarioProjeto[] = [];
   totalItems!: number;
+  totalItemsPart!: boolean;
   @ViewChild(MatSort) sort: MatSort | undefined;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
-  constructor(private projectService: ProjectService, private router: Router, public dialog: MatDialog) { }
+  constructor(private authService: AuthService, private projectService: ProjectService, private router: Router, public dialog: MatDialog) { }
 
+  currentUser = this.authService.getUser();
+  idUser = this.currentUser.id;
 
   ngOnInit(): void {
     this.carregarProjetos();
+    this.carregarProjetosPart(this.idUser);
   }
 
   ngAfterViewInit(): void {
@@ -47,6 +57,39 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
       }
     );
   }
+
+
+
+
+  carregarProjetosPart(idUser: number) {
+    this.projectService.getProjetoPart(idUser).subscribe(
+      (projetosPart: UsuarioProjeto[]) => {
+        const requests = projetosPart.map(projetoPart =>
+          this.projectService.getProjetoById(projetoPart.projetoId).pipe(
+            map(projeto => {
+              projetoPart.projeto = projeto;
+              return projetoPart;
+            })
+          )
+        );
+  
+        forkJoin(requests).subscribe(
+          (result: UsuarioProjeto[]) => {
+            this.projetosPart = result;
+            this.totalItemsPart = this.projetosPart.length > 0;
+            console.log('Projetos carregados:', this.projetosPart);
+          },
+          (erro) => {
+            console.error('Erro ao buscar detalhes dos projetos', erro);
+          }
+        );
+      },
+      (erro) => {
+        console.error('Erro ao buscar projetos em que participo', erro);
+      }
+    );
+  }
+
 
 
   abrirDialogoConfirmacao(projetoId: number): void {

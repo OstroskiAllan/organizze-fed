@@ -13,6 +13,7 @@
         </mat-form-field>
     </form>
     <button mat-button (click)="adicionarMembro()">Adicionar Membro</button>
+    <button mat-button (click)="fecharDialog()">Fechar</button>
 
     <!-- <table mat-table [dataSource]="membrosEquipe">
          Defina as colunas da tabela aqui 
@@ -42,6 +43,4 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table> -->
 </div>
-<div mat-dialog-actions>
-    <button mat-button (click)="fecharDialog()">Fechar</button>
-</div>
+

@@ -1,74 +1,125 @@
-<div class="mat-elevation-x3">
-    <mat-card class="dash">
+<mat-card class="dash">
+    <mat-card-title class="title"> <!-- Colocar um if aqui para quando nao tiver projeto -->
+        Projetos que participo:
+    </mat-card-title>
+</mat-card>
 
-        <mat-card-title class="title">
-            Meus Projetos:
-        </mat-card-title>
-        <div *ngIf="totalItems == 0">
-            <mat-card-subtitle class="subtitle">
-                Parece que voce não tem nenhum projeto criado no momento! Vamos criar seu primeiro projeto e começar a Organizar!
-            </mat-card-subtitle>
-        </div>
-    </mat-card>
-    <div *ngIf="totalItems > 0">
-    <table mat-table class="full-width-table" aria-label="Lista de Projetos" [dataSource]="projetos" matSort>
+<div>
+    <table mat-table class="full-width-table" aria-label="Lista de Projetos em que participo"
+        [dataSource]="projetosPart" matSort>
+
         <!-- Nome do Projeto Column -->
         <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
-            <td mat-cell *matCellDef="let projeto">{{projeto.nome}}</td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome do Projeto</th>
+            <td mat-cell *matCellDef="let projetoPart">{{ projetoPart.projeto.nome }}</td>
         </ng-container>
 
         <!-- Descrição do Projeto Column -->
         <ng-container matColumnDef="descricao">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Descrição</th>
-            <td mat-cell *matCellDef="let projeto">{{projeto.descricao}}</td>
+            <td mat-cell *matCellDef="let projetoPart">{{ projetoPart.projeto.descricao }}</td>
         </ng-container>
 
-        <!-- Data de Criação Column -->
-        <!-- <ng-container matColumnDef="data_criacao">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Criado em</th>
-            <td mat-cell *matCellDef="let projeto">{{projeto.dataCriacao | date}}</td>
-        </ng-container> -->
-
-        <!-- Data de Início Column -->
-        <ng-container matColumnDef="data_inicio">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Início</th>
-            <td mat-cell *matCellDef="let projeto">{{projeto.dataInicio | date}}</td>
+        <!-- Cargo Column -->
+        <ng-container matColumnDef="cargo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Meu cargo:</th>
+            <td mat-cell *matCellDef="let projetoPart">{{ projetoPart.cargo }}</td>
         </ng-container>
 
-        <!-- Data de Fim Column -->
-        <ng-container matColumnDef="data_fim">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fim</th>
-            <td mat-cell *matCellDef="let projeto">{{projeto.dataFim | date}}</td>
-        </ng-container>
 
-        <!-- Ações Column -->
-        <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>Ações</th>
-            <td mat-cell *matCellDef="let projeto">
-                <!-- <button mat-icon-button color="primary" (click)="editarProjeto(projeto.id)">
-                  <mat-icon>edit</mat-icon>
-              </button> -->
-                <button mat-icon-button color="warn" (click)="abrirDialogoConfirmacao(projeto.id)">
-                    <!-- (click)="deleteProjeto(projeto.id)"-->
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button color="orange" (click)="abrirDialogoConfirmacao(projeto.id)">
-                    <!-- (click)="deleteProjeto(projeto.id)"-->
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </td>
-        </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="abrirDetalhes(row.id)"></tr>
+        <tr mat-header-row *matHeaderRowDef="projectColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: projectColumns;" (click)="abrirDetalhes(row.projetoId)"></tr>
     </table>
     <div *ngIf="totalItems > 4">
         <mat-paginator #paginator [length]="totalItems" [pageIndex]="0" [pageSize]="6" [pageSizeOptions]="[3, 5, 7]"
             aria-label="Itens por página: ">
         </mat-paginator>
     </div>
+
+    <br>
+
+
+    <div class="mat-elevation-x3">
+        <mat-card>
+            <mat-card class="dash">
+
+                <mat-card-title class="title">
+                    Meus Projetos:
+                </mat-card-title>
+                <div *ngIf="totalItems == 0">
+                    <mat-card-subtitle class="subtitle">
+                        Parece que voce não tem nenhum projeto criado no momento! Vamos criar seu primeiro projeto e
+                        começar
+                        a Organizar!
+                    </mat-card-subtitle>
+                </div>
+            </mat-card>
+            <div *ngIf="totalItems > 0">
+                <table mat-table class="full-width-table" aria-label="Lista de Projetos" [dataSource]="projetos"
+                    matSort>
+                    <!-- Nome do Projeto Column -->
+                    <ng-container matColumnDef="nome">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+                        <td mat-cell *matCellDef="let projeto">{{projeto.nome}}</td>
+                    </ng-container>
+
+                    <!-- Descrição do Projeto Column -->
+                    <ng-container matColumnDef="descricao">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Descrição</th>
+                        <td mat-cell *matCellDef="let projeto">{{projeto.descricao}}</td>
+                    </ng-container>
+
+                    <!-- Data de Criação Column -->
+                    <!-- <ng-container matColumnDef="data_criacao">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Criado em</th>
+            <td mat-cell *matCellDef="let projeto">{{projeto.dataCriacao | date}}</td>
+        </ng-container> -->
+
+                    <!-- Data de Início Column -->
+                    <ng-container matColumnDef="data_inicio">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Início</th>
+                        <td mat-cell *matCellDef="let projeto">{{projeto.dataInicio | date}}</td>
+                    </ng-container>
+
+                    <!-- Data de Fim Column -->
+                    <ng-container matColumnDef="data_fim">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Fim</th>
+                        <td mat-cell *matCellDef="let projeto">{{projeto.dataFim | date}}</td>
+                    </ng-container>
+
+                    <!-- Ações Column -->
+                    <ng-container matColumnDef="actions">
+                        <th mat-header-cell *matHeaderCellDef>Ações</th>
+                        <td mat-cell *matCellDef="let projeto">
+                            <!-- <button mat-icon-button color="primary" (click)="editarProjeto(projeto.id)">
+                  <mat-icon>edit</mat-icon>
+              </button> -->
+                            <button mat-icon-button color="warn" (click)="abrirDialogoConfirmacao(projeto.id)">
+                                <!-- (click)="deleteProjeto(projeto.id)"-->
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                            <button mat-icon-button color="orange" (click)="abrirDialogoConfirmacao(projeto.id)">
+                                <!-- (click)="deleteProjeto(projeto.id)"-->
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="abrirDetalhes(row.id)"></tr>
+                </table>
+                <div *ngIf="totalItems > 4">
+                    <mat-paginator #paginator [length]="totalItems" [pageIndex]="0" [pageSize]="6"
+                        [pageSizeOptions]="[3, 5, 7]" aria-label="Itens por página: ">
+                    </mat-paginator>
+                </div>
+            </div>
+            <div>
+            </div>
+
+
+        </mat-card>
+        <br>
     </div>
-    <div>
-        
-    </div>
+    <br><br>

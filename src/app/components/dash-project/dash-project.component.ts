@@ -11,7 +11,7 @@ import { TaskComponent } from '../task/task/task.component';
 import { TeamComponent } from '../team/team/team.component';
 
 @Component({
-  selector: 'app-dash-project',
+  selector: 'dash-project',
   templateUrl: './dash-project.component.html',
   styleUrls: ['./dash-project.component.scss']
 })
@@ -35,14 +35,14 @@ export class DashProjectComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.carregarTarefas();
+    //this.carregarTarefas();
     this.carregarDadosProjeto();
   }
   carregarDadosProjeto() {
     const projetoId = +this.route.snapshot.params['id'];
     this.projetoService.getProjetoById(projetoId).subscribe(projeto => {
       this.projeto = projeto;
-
+      console.log('oque carrego do projeto ', projeto);
       // Recupere as tabelas do projeto
       // this.projetoService.getTabelasDoProjeto(projetoId).subscribe(tabela => {
       //   this.tabela = tabela;

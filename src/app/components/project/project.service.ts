@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { Projeto } from 'src/app/models/projeto.model';
+import { UsuarioProjeto } from 'src/app/models/usuarioprojeto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,9 +38,21 @@ export class ProjectService {
   }
 
   getProjetoById(id: number): Observable<Projeto>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+
     const url = `${this.apiUrl}/${id}`
-    return this.http.get<Projeto>(url)
+    return this.http.get<Projeto>(url, {headers});
   }
+
+  getProjetoPart(id: number): Observable<UsuarioProjeto[]>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    const url = `${this.apiUrl}/part/${id}`
+
+    return this.http.get<UsuarioProjeto[]>(url, {headers})
+  }
+  
   
   deleteProjeto(id: number): Observable<Projeto> {
     const token = localStorage.getItem('token');
