@@ -9,6 +9,7 @@ import { ProjectService } from '../project/project.service';
 import { TaskService } from '../task/task.service';
 import { TaskComponent } from '../task/task/task.component';
 import { TeamComponent } from '../team/team/team.component';
+import { TeamReadComponent } from '../team/team-read/team-read.component';
 
 @Component({
   selector: 'dash-project',
@@ -42,7 +43,6 @@ export class DashProjectComponent implements OnInit {
     const projetoId = +this.route.snapshot.params['id'];
     this.projetoService.getProjetoById(projetoId).subscribe(projeto => {
       this.projeto = projeto;
-      console.log('oque carrego do projeto ', projeto);
       // Recupere as tabelas do projeto
       // this.projetoService.getTabelasDoProjeto(projetoId).subscribe(tabela => {
       //   this.tabela = tabela;
@@ -83,8 +83,8 @@ export class DashProjectComponent implements OnInit {
         data: {} // Aqui você pode passar quaisquer dados necessários para o modal
       });
     } else if (modalType === 'equipe') {
-      dialogRef = this.dialog.open(TeamComponent, {
-        width: '500px',
+      dialogRef = this.dialog.open(TeamReadComponent, {
+        width: '800px',
         data: {} // Aqui você pode passar quaisquer dados necessários para o modal
       });
     }

@@ -77,10 +77,9 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
           (result: UsuarioProjeto[]) => {
             this.projetosPart = result;
             this.totalItemsPart = this.projetosPart.length > 0;
-            console.log('Projetos carregados:', this.projetosPart);
           },
           (erro) => {
-            console.error('Erro ao buscar detalhes dos projetos', erro);
+            console.error('Erro ao buscar detalhes dos projetos em que o usuario atual participa', erro);
           }
         );
       },

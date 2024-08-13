@@ -9,7 +9,7 @@ import { ProjectsComponent } from './components/project/projects/projects.compon
 import { DashProjectComponent } from './components/dash-project/dash-project.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'register', component: RegisterComponent },

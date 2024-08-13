@@ -5,35 +5,26 @@
     <div class="dash1">
         <mat-card class="mat-elevation-z3 card">
 
-            <mat-card-title class="title">Projeto: <h3>{{projeto.nome}}</h3>
+            <mat-card-title class="title">Projeto: <h3 style="height: 1em;">{{projeto.nome}}</h3>
 
                 <mat-divider></mat-divider>
             </mat-card-title>
 
             <mat-card-subtitle class="subtitle">Descrição: {{projeto.descricao}} </mat-card-subtitle>
-            <mat-card-subtitle class="subtitle">Data de Início: </mat-card-subtitle>
-            <mat-card-subtitle class="subtitle">Data de Fim: </mat-card-subtitle>
-           
+            <mat-card-subtitle class="subtitle">Data de Início: {{projeto.dataInicio | date}} </mat-card-subtitle>
+            <mat-card-subtitle class="subtitle">Data de Fim: {{projeto.dataFim | date }} </mat-card-subtitle>
+
             <br>
-
-            <button mat-raised-button color="primary">
-                Nova tarefa
-            </button>
+            <div>
+                <button mat-raised-button color="primary">
+                    Nova tarefa
+                </button>
+                <button mat-raised-button color="primary" (click)="openDialog('equipe')">
+                    Equipe
+                </button>
+            </div>
         </mat-card>
-        <mat-card class="mat-elevation-z3 card">
-            <mat-card-title class="title">
-                Equipe:
-                <mat-divider></mat-divider>
-            </mat-card-title>
-            <mat-card-subtitle class="subtitle">
-                Atual membros da equipe e seus cargos:
-            </mat-card-subtitle>
 
-            <button mat-raised-button style="margin-top: 110px" (click)="openDialog('equipe')" color="primary">
-                Editar
-            </button>
-
-        </mat-card>
     </div>
     <br>
     <mat-card>

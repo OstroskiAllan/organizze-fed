@@ -52,6 +52,22 @@ export class ProjectService {
 
     return this.http.get<UsuarioProjeto[]>(url, {headers})
   }
+
+  getTeamProjetoId(id: number): Observable<UsuarioProjeto[]>{
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    const url = `${this.apiUrl}/${id}/team`
+
+    return this.http.get<UsuarioProjeto[]>(url, { headers });
+  }
+  
+  getUserNameById(userId: number): Observable<string> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.apiUrl}/${userId}/nome`;
+  
+    return this.http.get<string>(url, { headers, responseType: 'text' as 'json' });
+  }
   
   
   deleteProjeto(id: number): Observable<Projeto> {
