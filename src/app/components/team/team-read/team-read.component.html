@@ -7,11 +7,9 @@
       <div *ngIf="team.length > 0; else noTeam">
           <mat-list>
             <mat-list-item *ngFor="let membro of team" class="team-member">
-            
-            <mat-card-subtitle class="subtitle">Nome:  {{ membro.nome }} </mat-card-subtitle>
-            <p>Cargo: {{ membro.cargo}}</p>
-           
-        
+            <p>Nome: {{ membro.nome }}</p>
+            <mat-card-subtitle > Cargo:{{ membro.cargo}}</mat-card-subtitle>
+            <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>
       </div>

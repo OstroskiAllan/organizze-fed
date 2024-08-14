@@ -42,6 +42,7 @@ import { DashProjectComponent } from './components/dash-project/dash-project.com
 import { TaskComponent } from './components/task/task/task.component';
 import { TeamComponent } from './components/team/team/team.component';
 import { TeamReadComponent } from './components/team/team-read/team-read.component';
+import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.component';
 
 
 
@@ -66,6 +67,7 @@ import { TeamReadComponent } from './components/team/team-read/team-read.compone
     DashProjectComponent,
     TeamComponent,
     TeamReadComponent,
+    TaskboardComponent
   ],
   imports: [
     BrowserModule,
