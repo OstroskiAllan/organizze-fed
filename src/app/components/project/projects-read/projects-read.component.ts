@@ -21,6 +21,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
   projetos: any[] = [];
   projetosPart:  UsuarioProjeto[] = [];
   totalItems!: number;
+  totalIPart!: number;
   totalItemsPart!: boolean;
   @ViewChild(MatSort) sort: MatSort | undefined;
   @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
@@ -77,6 +78,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
           (result: UsuarioProjeto[]) => {
             this.projetosPart = result;
             this.totalItemsPart = this.projetosPart.length > 0;
+            this.totalIPart = this.projetosPart.length;
           },
           (erro) => {
             console.error('Erro ao buscar detalhes dos projetos em que o usuario atual participa', erro);

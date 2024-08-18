@@ -83,21 +83,29 @@
         <br>
     </div>
     <br>
-    <div class="mat-elevation-x3">
+
+    <ng-container   class="mat-elevation-x3">
         <mat-card>
             <mat-card class="dash">
                 <mat-card-title class="title"> <!-- Colocar um if aqui para quando nao tiver projeto -->
                     Projetos que participo:
                 </mat-card-title>
             </mat-card>
+            <ng-container *ngIf="totalIPart == null">
+                <br>
+                <mat-card-subtitle class="subtitle" style="padding: 15px;">
+                      Parece que voce não está incluido em nenhum projeto no momento!
+                </mat-card-subtitle>
+                <br>
+            </ng-container>
 
-            <div>
+            <div *ngIf="totalIPart > 0">
                 <table mat-table class="full-width-table" aria-label="Lista de Projetos em que participo"
                     [dataSource]="projetosPart" matSort>
 
                     <!-- Nome do Projeto Column -->
                     <ng-container matColumnDef="nome">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome do Projeto</th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
                         <td mat-cell *matCellDef="let projetoPart">{{ projetoPart.projeto.nome }}</td>
                     </ng-container>
 
@@ -127,4 +135,5 @@
             </div>      
     </mat-card>
 
-                <br><br><br><br>
+</ng-container>
+<br><br><br><br>
