@@ -1,46 +1,74 @@
 <h2 mat-dialog-title>Equipe</h2>
 <div mat-dialog-content>
-    <form [formGroup]="equipeForm">
-        <mat-form-field class="input" appearance="fill">
-            <mat-label>Email Colaborador</mat-label>
-            <input matInput formControlName="email" placeholder="Email Colaborador">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Cargo</mat-label>
-            <mat-select formControlName="cargo">
-                <mat-option *ngFor="let cargo of cargos" [value]="cargo">{{ cargo }}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </form>
-    <button mat-button (click)="adicionarMembro()">Adicionar Membro</button>
-    <button mat-button (click)="fecharDialog()">Fechar</button>
+  <mat-card>
+    <mat-card-content>
+      <!-- Tabela de Listagem de Membros -->
+      <div *ngIf="team.length > 1; else noTeam">
+        <mat-table [dataSource]="team" class="mat-elevation-z4">
 
-    <!-- <table mat-table [dataSource]="membrosEquipe">
-         Defina as colunas da tabela aqui 
-        <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let membro">{{ membro.email }}</td>
-        </ng-container>
+          <!-- Nome Coluna -->
+          <ng-container matColumnDef="nome">
+            <mat-header-cell *matHeaderCellDef> Nome </mat-header-cell>
+            <mat-cell *matCellDef="let membro"> {{ membro.nome }} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="cargo">
-            <th mat-header-cell *matHeaderCellDef>Cargo</th>
-            <td mat-cell *matCellDef="let membro">{{ membro.cargo }}</td>
-        </ng-container>
+          <!-- Cargo Coluna -->
+          <ng-container matColumnDef="cargo">
+            <mat-header-cell *matHeaderCellDef> Cargo </mat-header-cell>
+            <mat-cell *matCellDef="let membro"> {{ membro.cargo }} </mat-cell>
+          </ng-container>
 
-        <ng-container matColumnDef="acoes">
-            <th mat-header-cell *matHeaderCellDef>Ações</th>
-            <td mat-cell *matCellDef="let membro">
-                <button mat-icon-button color="warn" (click)="excluirMembro(membro.id)">
-                    <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button color="primary" (click)="editarCargo(membro.id)">
-                    <mat-icon>edit</mat-icon>
-                </button>
-            </td>
-        </ng-container>
+          <!-- Header e Rows -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table> -->
+        </mat-table>
+      </div>
+
+      <ng-template #noTeam>
+        <p>Sem equipe no momento</p>
+      </ng-template>
+
+      <!-- Formulário de Adição de Novo Membro -->
+      <div *ngIf="showAddForm" class="add-member-form mat-elevation-z2">
+        <mat-card-content class="cardForm">
+          <mat-card-title>
+            Adicionar novo integrante no atual projeto:
+          </mat-card-title>
+          <form [formGroup]="equipeForm">
+            <mat-form-field class="input" appearance="fill">
+              <mat-label>Email Colaborador</mat-label>
+              <input matInput formControlName="email" placeholder="Email Colaborador" id="input1" (click)="onInputClick('input1')">
+            </mat-form-field>
+
+            <ng-container *ngIf="clickedInput === 'input1'">
+              <mat-form-field class="input">
+                <mat-label>Cargo</mat-label>
+                <mat-select formControlName="cargo" (selectionChange)="onCargoChange($event)">
+                  <mat-option *ngFor="let cargo of cargos" [value]="cargo">{{ cargo }}</mat-option>
+                  <mat-option value="Outro">Outro</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- Campo para o novo cargo, exibido apenas se 'Outro' for selecionado -->
+              <mat-form-field *ngIf="showOtherCargoField" class="input">
+                <mat-label>Digite o novo cargo</mat-label>
+                <input matInput formControlName="otherCargo" placeholder="Novo Cargo">
+              </mat-form-field>
+            </ng-container>
+            
+            <mat-card-actions class="buttons-new-member">
+              <button mat-raised-button color="primary" (click)="salvarNovoMembro()">Salvar</button>
+              <button mat-raised-button color="warn" (click)="cancelarAdicao()">Cancelar</button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="button">
+      <button mat-raised-button color="primary" (click)="toggleAddForm()">Adicionar</button>
+      <button mat-raised-button color="primary" (click)="fecharDialog()">Fechar</button>
+    </mat-card-actions>
+  </mat-card>
 </div>
-

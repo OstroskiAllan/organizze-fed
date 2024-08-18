@@ -41,7 +41,6 @@ import { ModalConfirmacaoComponent } from './views/template/modal-confirmacao/mo
 import { DashProjectComponent } from './components/dash-project/dash-project.component';
 import { TaskComponent } from './components/task/task/task.component';
 import { TeamComponent } from './components/team/team/team.component';
-import { TeamReadComponent } from './components/team/team-read/team-read.component';
 import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.component';
 
 
@@ -66,8 +65,7 @@ import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.c
     TaskComponent,
     DashProjectComponent,
     TeamComponent,
-    TeamReadComponent,
-    TaskboardComponent
+    TaskboardComponent,
   ],
   imports: [
     BrowserModule,

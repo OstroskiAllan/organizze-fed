@@ -44,8 +44,8 @@ export class ProjectsCreateComponent  implements OnInit {
       this.projectService.create(novoProjeto).subscribe(
         data => {
           this.projectService.showMessage("Projeto cadastrado com sucesso!");
-          this.reload();
           this.closeDialog();
+          this.reload();
         },
         error => {
           this.projectService.showMessage("Ocorreu um erro ao cadastrar o projeto." + error);
@@ -56,7 +56,7 @@ export class ProjectsCreateComponent  implements OnInit {
 
   reload() {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-      this.router.navigate(['projeto']);
+      this.router.navigate(['projects']);
     });
   }
 

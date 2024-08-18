@@ -1,0 +1,63 @@
+.dash1 {
+    display: flex;
+}
+
+.title {
+    margin: 15px 15px 0;
+}
+
+.subtitle {
+    margin: 15px 15px 0;
+}
+
+button {
+    width: 60%;
+    margin: 15px 15px;
+    background-color: #537cf7 !important;
+}
+
+.card {
+    width: 50%
+}
+
+
+/* Adiciona margem inferior a cada item da lista */
+.team-member {
+    margin-bottom: 16px;
+    /* Ajuste conforme necessário */
+}
+
+/* Adiciona uma borda inferior leve para separar visualmente os itens */
+.team-member.mat-list-item {
+    border-bottom: 1px solid #ddd;
+    /* Ajuste a cor e estilo conforme necessário */
+    padding-bottom: 8px;
+    /* Espaçamento adicional abaixo do item */
+}
+
+.add-member-form {
+    margin-top: 20px;
+}
+
+.input {
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+mat-card-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardForm {}
+
+.buttons-new-member {
+    width: 45%;
+}
+
+.button{
+    width: 50%;
+}

@@ -9,7 +9,6 @@ import { ProjectService } from '../project/project.service';
 import { TaskService } from '../task/task.service';
 import { TaskComponent } from '../task/task/task.component';
 import { TeamComponent } from '../team/team/team.component';
-import { TeamReadComponent } from '../team/team-read/team-read.component';
 
 @Component({
   selector: 'dash-project',
@@ -20,14 +19,15 @@ export class DashProjectComponent implements OnInit {
   usuario!: Usuario;
   projeto!: Projeto;
   tarefas!: Tarefa;
+  projetoId?: number;
 
   done: any[] = [];
   todo: any[] = [];
   work: any[] = [];
+
   selectedTask: any;
   constructor(
     private projetoService: ProjectService, 
-    private router: Router, 
     private route: ActivatedRoute, 
     public dialog: MatDialog, 
     private tarefaService: TaskService
@@ -38,6 +38,7 @@ export class DashProjectComponent implements OnInit {
   ngOnInit(): void {
     //this.carregarTarefas();
     this.carregarDadosProjeto();
+    this.projetoId = +this.route.snapshot.params['id'];
   }
   carregarDadosProjeto() {
     const projetoId = +this.route.snapshot.params['id'];
@@ -76,6 +77,7 @@ export class DashProjectComponent implements OnInit {
 
   openDialog(modalType: string): MatDialogRef<any> | undefined {
     let dialogRef: MatDialogRef<any> | undefined;
+    const dialogData = { projetoId: this.projetoId }; // Crie um objeto de dados com o ID do projeto
 
     if (modalType === 'task') {
       dialogRef = this.dialog.open(TaskComponent, {
@@ -83,9 +85,9 @@ export class DashProjectComponent implements OnInit {
         data: {} // Aqui você pode passar quaisquer dados necessários para o modal
       });
     } else if (modalType === 'equipe') {
-      dialogRef = this.dialog.open(TeamReadComponent, {
+      dialogRef = this.dialog.open(TeamComponent, {
         width: '800px',
-        data: {} // Aqui você pode passar quaisquer dados necessários para o modal
+        data: dialogData  // Aqui você pode passar quaisquer dados necessários para o modal
       });
     }
 

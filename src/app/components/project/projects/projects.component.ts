@@ -53,7 +53,6 @@ export class ProjectsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('O modal foi fechado');
       this.carregarProjetos();
     });
     this.carregarProjetos();
