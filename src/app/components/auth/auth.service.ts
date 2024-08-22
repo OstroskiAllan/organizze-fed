@@ -22,24 +22,17 @@ export class AuthService {
     })
   }
   isLoggedIn(): boolean {
-    // Implemente a lógica para verificar se o usuário está autenticado
-    // Por exemplo, verificar se há um token válido no armazenamento local
-    const token = localStorage.getItem('token');
-    return !!token; // Retorna true se houver um token válido, false caso contrário
+    const token = this.getToken();
+    return !token; // Retorna true se houver um token válido, false caso contrário
   }
 
-  // login(email: string, password: string): Observable<any> {
-  //   localStorage.setItem('token', 'seu-token-jwt-aqui');
-  //   //localStorage.setItem('currentUser', JSON.stringify(response.user));
-  //   return this.http.post<any>(`${this.loginUrl}/login`, { email, password });
-  // }
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.loginUrl}/login`, { email, password }).pipe(
       tap(response => {
         // Armazene o token no local storage
         localStorage.setItem('token', response.token);
         // Armazene as informações do usuário no local storage
-       localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('user', JSON.stringify(response.user));
       })
     );
   }
@@ -47,13 +40,9 @@ export class AuthService {
     let user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
-  
+
   register(nome: string, email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.loginUrl}/register`, { nome, email, password });
-  }
-
-  home(): Observable<any> {
-    return this.http.get<any>(`${this.loginUrl}/alla`);
   }
 
   // Método para salvar o token no localStorage
