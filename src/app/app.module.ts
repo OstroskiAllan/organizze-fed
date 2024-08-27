@@ -42,7 +42,8 @@ import { DashProjectComponent } from './components/dash-project/dash-project.com
 import { TaskComponent } from './components/task/task/task.component';
 import { TeamComponent } from './components/team/team/team.component';
 import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.component';
-
+import { TesteDashComponent } from './teste-dash/teste-dash.component';
+import { TesteDragComponent } from './teste-drag/teste-drag.component';
 
 
 
@@ -66,6 +67,8 @@ import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.c
     DashProjectComponent,
     TeamComponent,
     TaskboardComponent,
+    TesteDashComponent,
+    TesteDragComponent,
   ],
   imports: [
     BrowserModule,
