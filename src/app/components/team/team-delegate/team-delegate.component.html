@@ -1,0 +1,14 @@
+<ng-container *ngIf="team.length > 2">
+<form [formGroup]="form">
+    <mat-form-field appearance="fill" style="width: 450px">
+      <mat-label>Atribuir tarefa:</mat-label>
+      <mat-select formControlName="selectedMember">
+        <mat-option *ngFor="let member of team" [value]="member.usuarioId">
+          {{ member.nome }} - {{ member.cargo }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+</form>
+</ng-container>
+  

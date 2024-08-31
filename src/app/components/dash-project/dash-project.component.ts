@@ -9,6 +9,7 @@ import { ProjectService } from '../project/project.service';
 import { TaskService } from '../task/task.service';
 import { TaskComponent } from '../task/task/task.component';
 import { TeamComponent } from '../team/team/team.component';
+import { TaskCreateComponent } from '../task/task-create/task-create.component';
 
 @Component({
   selector: 'dash-project',
@@ -78,11 +79,12 @@ export class DashProjectComponent implements OnInit {
   openDialog(modalType: string): MatDialogRef<any> | undefined {
     let dialogRef: MatDialogRef<any> | undefined;
     const dialogData = { projetoId: this.projetoId }; // Crie um objeto de dados com o ID do projeto
+    const test = +this.route.snapshot.params['id'];
 
-    if (modalType === 'task') {
-      dialogRef = this.dialog.open(TaskComponent, {
+    if (modalType === 'task-create') {
+      dialogRef = this.dialog.open(TaskCreateComponent, {
         width: '500px',
-        data: {} // Aqui você pode passar quaisquer dados necessários para o modal
+        data: test // Aqui você pode passar quaisquer dados necessários para o modal
       });
     } else if (modalType === 'equipe') {
       dialogRef = this.dialog.open(TeamComponent, {

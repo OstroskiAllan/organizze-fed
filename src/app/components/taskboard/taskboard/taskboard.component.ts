@@ -1,11 +1,13 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Projeto } from 'src/app/models/projeto.model';
 import { Tarefa } from 'src/app/models/tarefa.model';
 import { Usuario } from 'src/app/models/usuario.model';
 import { ProjectService } from '../../project/project.service';
+import { TaskComponent } from '../../task/task/task.component';
+import { TeamComponent } from '../../team/team/team.component';
 
 @Component({
   selector: 'taskboard',
@@ -70,5 +72,5 @@ export class TaskboardComponent implements OnInit {
     }
   }
 
-  
+ 
 }

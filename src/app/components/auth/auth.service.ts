@@ -23,9 +23,9 @@ export class AuthService {
   }
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
-    return !!token; 
+    // return !!token; 
    // const token = this.getToken(); //verificar essa parte aqqui
-    return !token; // Retorna true se houver um token válido, false caso contrário
+    return !!token; // Retorna true se houver um token válido, false caso contrário
   }
 
   login(email: string, password: string): Observable<any> {

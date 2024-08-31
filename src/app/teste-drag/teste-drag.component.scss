@@ -84,3 +84,32 @@ button.expanded::after {
 .task-details p {
   margin: 5px 0;
 }
+.task-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+}
+
+.task-details {
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  background-color: #f4f4f4;
+}
+
+.expand-button {
+  display: block;
+  margin: 10px auto;
+}
+
+input, textarea {
+  width: 100%;
+  margin-top: 8px;
+}
+
+button {
+  margin-top: 8px;
+}
