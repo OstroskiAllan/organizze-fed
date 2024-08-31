@@ -44,6 +44,9 @@ import { TeamComponent } from './components/team/team/team.component';
 import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.component';
 import { TesteDashComponent } from './teste-dash/teste-dash.component';
 import { TesteDragComponent } from './teste-drag/teste-drag.component';
+import { TaskCreateComponent } from './components/task/task-create/task-create.component';
+import { TeamDelegateComponent } from './components/team/team-delegate/team-delegate.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 
@@ -69,6 +72,8 @@ import { TesteDragComponent } from './teste-drag/teste-drag.component';
     TaskboardComponent,
     TesteDashComponent,
     TesteDragComponent,
+    TaskCreateComponent,
+    TeamDelegateComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,7 +99,8 @@ import { TesteDragComponent } from './teste-drag/teste-drag.component';
     MatGridListModule,
     MatMenuModule,
     CdkAccordionModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
