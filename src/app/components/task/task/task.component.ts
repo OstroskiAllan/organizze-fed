@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Tarefa } from 'src/app/models/tarefa.model';
 
 @Component({
@@ -8,37 +8,34 @@ import { Tarefa } from 'src/app/models/tarefa.model';
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss']
 })
-export class TaskComponent implements OnInit {
-  novaTarefaForm!: FormGroup;
+export class TaskComponent {
+  taskForm: FormGroup;
+  isEditing: string | null = null;  // Variável de controle para edição
 
   constructor(
     public dialogRef: MatDialogRef<TaskComponent>,
-    private formBuilder: FormBuilder
-  ) { }
-
-  ngOnInit(): void {
-    this.novaTarefaForm = this.formBuilder.group({
-      nome: ['', Validators.required],
-      observacoes: ['', Validators.required],
-      dataInicio: ['', Validators.required],
-      dataFim: ['', Validators.required],
-      statusId: [1, Validators.required] // Definindo o status padrão como 1 (Analise)
+    @Inject(MAT_DIALOG_DATA) public task: any,
+    private fb: FormBuilder
+  ) {
+    this.taskForm = this.fb.group({
+      nome: [task.nome, Validators.required],
+      observacoes: [task.observacoes],
+      dataCriacao: [task.dataCriacao, Validators.required],
+      dataEntrega: [task.dataEntrega, Validators.required],
     });
   }
-  salvarTarefa() {
-    if (this.novaTarefaForm.valid) {
-      const novaTarefa: Tarefa = {
-        nome: this.novaTarefaForm.get('nome')!.value,
-        observacoes: this.novaTarefaForm.get('observacoes')!.value,
-        dataCriacao: new Date(), // Definindo a data de criação como a data atual
-        dataEntrega: this.novaTarefaForm.get('dataEntrega')!.value,
-        //projetoId: null, // Defina o ID do projeto se necessário
-        statusId: this.novaTarefaForm.get('statusId')!.value,
-        //usuarioId:  // Defina o ID do usuário se necessário
-      };
-      // Lógica para salvar a tarefa (provavelmente uma chamada ao serviço)
-      // Exemplo: this.tarefaService.criarTarefa(novaTarefa).subscribe(...);
-      this.dialogRef.close(novaTarefa);
+
+  toggleEdit(field: string) {
+    if (this.isEditing === field) {
+      this.isEditing = null; // Termina a edição
+    } else {
+      this.isEditing = field; // Inicia a edição
+    }
+  }
+
+  saveChanges() {
+    if (this.taskForm.valid) {
+      this.dialogRef.close(this.taskForm.value);
     }
   }
 

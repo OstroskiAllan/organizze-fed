@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Equipe</h2>
-<div mat-dialog-content>
-  <mat-card>
+
+  <mat-card mat-dialog-content>
     <mat-card-content>
       <!-- Tabela de Listagem de Membros -->
       <div *ngIf="team.length > 1; else noTeam">
@@ -58,8 +58,8 @@
             </ng-container>
             
             <mat-card-actions class="buttons-new-member">
-              <button mat-raised-button color="primary" (click)="salvarNovoMembro()">Salvar</button>
               <button mat-raised-button color="warn" (click)="cancelarAdicao()">Cancelar</button>
+              <button mat-raised-button color="primary" (click)="salvarNovoMembro()">Salvar</button>
             </mat-card-actions>
           </form>
         </mat-card-content>
@@ -67,8 +67,7 @@
     </mat-card-content>
 
     <mat-card-actions class="button">
-      <button mat-raised-button color="primary" (click)="toggleAddForm()">Adicionar</button>
       <button mat-raised-button color="primary" (click)="fecharDialog()">Fechar</button>
+      <button mat-raised-button color="primary" (click)="toggleAddForm()">Adicionar</button>
     </mat-card-actions>
   </mat-card>
-</div>

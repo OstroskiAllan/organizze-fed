@@ -24,7 +24,7 @@ export class AuthService {
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     // return !!token; 
-   // const token = this.getToken(); //verificar essa parte aqqui
+   // const token = this.getToken(); //codigo verificar depois essa parte aqqui
     return !!token; // Retorna true se houver um token válido, false caso contrário
   }
 

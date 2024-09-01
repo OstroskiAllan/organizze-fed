@@ -88,4 +88,13 @@ export class TesteDragComponent {
     return dialogRef;
   }
 
+  viewTaskDetails(item: any) {
+    this.openDialog('task');
+    // Aqui você pode abrir um modal, navegar para uma página de detalhes, ou apenas mostrar um alerta
+    console.log('Detalhes da tarefa:', item);
+    // Exemplo: abrir um modal (assumindo que você tenha um serviço de diálogo configurado)
+    // this.dialog.open(TaskDetailsComponent, { data: item });
+  }
+  
+
 }

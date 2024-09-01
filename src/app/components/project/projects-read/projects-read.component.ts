@@ -16,7 +16,7 @@ import { forkJoin, map } from 'rxjs';
   styleUrls: ['./projects-read.component.scss']
 })
 export class ProjectsReadComponent  implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['nome', 'descricao', 'data_inicio', 'data_fim', 'actions']; // adicionar depois a data criaçao
+  displayedColumns: string[] = ['nome', 'descricao', 'data_inicio', 'data_fim']; // codigo verificar depois -- adicionar depois a data criaçao
   projectColumns: string[] = ['nome', 'descricao', 'cargo'];
   projetos: any[] = [];
   projetosPart:  UsuarioProjeto[] = [];

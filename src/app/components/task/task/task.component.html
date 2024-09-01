@@ -1,1 +1,56 @@
-<h1>deu certo</h1>
+<h2 mat-dialog-title>Detalhes da Tarefa</h2>
+<div mat-dialog-content>
+    <form [formGroup]="taskForm">
+        <!-- Nome da Tarefa -->
+        <div *ngIf="!isEditing">
+            <strong>Nome da Tarefa:</strong> {{ taskForm.get('nome')?.value }}
+            <button mat-button (click)="toggleEdit('nome')">Editar</button>
+        </div>
+        <mat-form-field class="input" *ngIf="isEditing === 'nome'" appearance="fill">
+            <mat-label>Nome da Tarefa</mat-label>
+            <input matInput formControlName="nome" placeholder="Nome da Tarefa">
+        </mat-form-field>
+
+        <!-- Observações -->
+        <div *ngIf="!isEditing">
+            <strong>Observações:</strong> {{ taskForm.get('observacoes')?.value }}
+            <button mat-button (click)="toggleEdit('observacoes')">Editar</button>
+        </div>
+        <mat-form-field class="input" *ngIf="isEditing === 'observacoes'" appearance="fill">
+            <mat-label>Observações</mat-label>
+            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre a Tarefa"></textarea>
+        </mat-form-field>
+
+        <!-- Datas -->
+        <div class="datas">
+            <div *ngIf="!isEditing">
+                <strong>Data de Criação:</strong> {{ taskForm.get('dataCriacao')?.value | date }}
+            </div>
+            <mat-form-field *ngIf="isEditing === 'dataCriacao'" appearance="fill">
+                <mat-label>Data de Criação</mat-label>
+                <input matInput type="date" formControlName="dataCriacao" placeholder="Data de Criação">
+            </mat-form-field>
+
+            <div *ngIf="!isEditing">
+                <strong>Data de Entrega:</strong> {{ taskForm.get('dataEntrega')?.value | date }}
+                <button mat-button (click)="toggleEdit('dataEntrega')">Editar</button>
+            </div>
+            <mat-form-field *ngIf="isEditing === 'dataEntrega'" appearance="fill">
+                <mat-label>Data de Entrega</mat-label>
+                <input matInput type="date" formControlName="dataEntrega" placeholder="Data de Entrega">
+            </mat-form-field>
+        </div>
+
+        <br>
+        <ng-container  *ngIf="!isEditing">
+            <!-- Componente para selecionar membros -->
+            <team-delegate></team-delegate>
+        </ng-container >
+    </form>
+    
+    <div mat-dialog-actions style="padding: 0px;">
+        <button mat-button (click)="closeDialog()">Cancelar</button>
+        <button mat-button type="submit" (click)="saveChanges()" [disabled]="taskForm.invalid">Salvar</button>
+    </div>
+</div>
+    

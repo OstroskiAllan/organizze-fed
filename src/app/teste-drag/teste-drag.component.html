@@ -8,7 +8,10 @@
          [cdkDropListConnectedTo]="['ToDo']"
          class="list"
          (cdkDropListDropped)="drop($event, 'Analyzing')">
-      <div class="list-item" *ngFor="let item of analyzing" cdkDrag>{{item}}</div>
+      <div class="list-item" *ngFor="let item of analyzing" cdkDrag>
+        {{item}}
+        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+      </div>
     </div>
   </div>
 
@@ -21,7 +24,10 @@
          [cdkDropListConnectedTo]="['Analyzing', 'Doing']"
          class="list"
          (cdkDropListDropped)="drop($event, 'ToDo')">
-      <div class="list-item" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+      <div class="list-item" *ngFor="let item of todo" cdkDrag>
+        {{item}}
+        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+      </div>
     </div>
   </div>
 
@@ -34,7 +40,10 @@
          [cdkDropListConnectedTo]="['ToDo', 'Done']"
          class="list"
          (cdkDropListDropped)="drop($event, 'Doing')">
-      <div class="list-item" *ngFor="let item of doing" cdkDrag>{{item}}</div>
+      <div class="list-item" *ngFor="let item of doing" cdkDrag>
+        {{item}}
+        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+      </div>
     </div>
   </div>
 
@@ -44,16 +53,15 @@
          #doneList="cdkDropList"
          id="Done"
          [cdkDropListData]="done"
-         [cdkDropListConnectedTo]="['Analyzing', 'ToDo', 'Doing']"
+         [cdkDropListConnectedTo]="['Doing']"
          class="list"
          (cdkDropListDropped)="drop($event, 'Done')">
 
-      <!-- Exibe os primeiros 10 itens ou todos, dependendo do estado de expansão -->
       <div class="list-item" *ngFor="let item of (isDoneExpanded ? done : done | slice:0:maxVisibleItems)" cdkDrag>
         {{item}}
+        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
       </div>
 
-      <!-- Botão para expandir/comprimir a lista -->
       <button *ngIf="done.length > maxVisibleItems" (click)="toggleDoneList()">
         {{isDoneExpanded ? 'Mostrar menos' : 'Mostrar mais'}}
       </button>
