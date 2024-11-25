@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { TaskService } from './../components/task/task.service';
+import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskComponent } from '../components/task/task/task.component';
 import { TeamComponent } from '../components/team/team/team.component';
+import { Router } from '@angular/router';
+import { Tarefa } from '../models/tarefa.model';
 
 interface Task {
   nome: string;
@@ -22,20 +25,42 @@ interface Task {
   templateUrl: './teste-drag.component.html',
   styleUrls: ['./teste-drag.component.scss']
 })
-export class TesteDragComponent {
+export class TesteDragComponent implements OnInit{
   analyzing = ['Review code', 'Write documentation'];
   todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
   doing = ['Work on project', 'Attend meeting'];
   done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog', 'Complete project', 'Plan next sprint', 'Team meeting', 'Client feedback', 'Refactor code', 'Push code', 'Deploy app'];
-
+  response: any[] = [];
   // Variável para controlar a expansão da lista "Done"
   isDoneExpanded = false;
 
   // Número máximo de itens visíveis inicialmente
   readonly maxVisibleItems = 6;
-  constructor(public dialog: MatDialog,
+  constructor(
+    public dialog: MatDialog,
+    private taskservice: TaskService,
+    private router: Router,
   ) { }
+
+  ngOnInit(): void {
+    this.carregarTask();
+  }
+
+  carregarTask() {
+    this.taskservice.getTarefasProjeto(1).subscribe(
+      (response) => {
+        // Aqui você pode manipular a resposta
+        this.response = response
+        console.log('Teste -- ', response);
+      },
+      (error) => {
+        // Tratar erros
+        console.error('Erro ao carregar tarefas:', error);
+      }
+    );
+  }
   
+
   drop(event: CdkDragDrop<string[]>, fromList: string): void {
     const currentIndex = event.currentIndex;
     const previousIndex = event.previousIndex;

@@ -57,7 +57,7 @@ export class DashProjectComponent implements OnInit {
 
     this.tarefaService.getTarefasProjeto(projetoId).subscribe(
       (tarefas) => {
-        this.tarefas = tarefas;
+        //this.tarefas = tarefas;
       },
       (error) => {
         console.error('Erro ao carregar as tarefas:', error);

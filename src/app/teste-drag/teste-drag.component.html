@@ -1,3 +1,19 @@
+<mat-card>
+  <mat-card-title> Teste de tarefas: </mat-card-title>
+  <div *ngFor="let tarefa of response; let i = index">
+    <h3>Tarefa {{ i + 1 }}</h3>
+    <p><strong>Nome:</strong> {{ tarefa.nome }}</p>
+    <p><strong>Observações:</strong> {{ tarefa.observacoes }}</p>
+    <p><strong>Data de Criação:</strong> {{ tarefa.dataCriacao | date }}</p>
+    <p><strong>Data de Entrega:</strong> {{ tarefa.dataEntrega | date }}</p>
+    <p><strong>ID do Projeto:</strong> {{ tarefa.projetoId }}</p>
+    <hr>
+  </div>
+  
+
+  <br><br>
+</mat-card>
+<br><br>
 <div class="dashzao">
   <div class="container">
     <h2>Análise</h2>
