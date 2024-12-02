@@ -11,7 +11,7 @@ import { Projeto } from 'src/app/models/projeto.model';
   templateUrl: './projects-create.component.html',
   styleUrls: ['./projects-create.component.scss']
 })
-export class ProjectsCreateComponent  implements OnInit {
+export class ProjectsCreateComponent implements OnInit {
   novoProjetoForm!: FormGroup;
 
   constructor(
@@ -26,9 +26,9 @@ export class ProjectsCreateComponent  implements OnInit {
     this.novoProjetoForm = this.formBuilder.group({
       nome: ['', Validators.required],
       descricao: [''],
-      dataInicio: [''],
-      dataFim: ['']
-    });
+      dataInicio: ['', [Validators.required]],
+      dataFim: ['', [Validators.required]]
+    },);
   }
 
 
@@ -60,14 +60,14 @@ export class ProjectsCreateComponent  implements OnInit {
     });
   }
 
-  formatarData(data: Date) {
-    if (data instanceof Date) {
-      return formatDate(data, 'yyyy-MM-dd', 'en-US'); // Formata a data no formato desejado
-    } else {
-      // Se a data for uma string, assume-se que já está no formato desejado
-      return data;
-    }
-  }
+  // formatarData(data: Date) {
+  //   if (data instanceof Date) {
+  //     return formatDate(data, 'yyyy-MM-dd', 'en-US'); // Formata a data no formato desejado
+  //   } else {
+  //     // Se a data for uma string, assume-se que já está no formato desejado
+  //     return data;
+  //   }
+  // }
   closeDialog(): void {
     this.dialogRef.close();
   }
