@@ -47,6 +47,8 @@ import { TesteDragComponent } from './teste-drag/teste-drag.component';
 import { TaskCreateComponent } from './components/task/task-create/task-create.component';
 import { TeamDelegateComponent } from './components/team/team-delegate/team-delegate.component';
 import { MatSelectModule } from '@angular/material/select';
+import { AgendaComponent } from './components/agenda/agenda.component';
+import { ArquivoComponent } from './components/arquivo/arquivo.component';
 
 
 
@@ -74,6 +76,8 @@ import { MatSelectModule } from '@angular/material/select';
     TesteDragComponent,
     TaskCreateComponent,
     TeamDelegateComponent,
+    AgendaComponent,
+    ArquivoComponent,
   ],
   imports: [
     BrowserModule,

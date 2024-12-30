@@ -7,14 +7,18 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './core/guard/AuthGuard';
 import { ProjectsComponent } from './components/project/projects/projects.component';
 import { DashProjectComponent } from './components/dash-project/dash-project.component';
+import { AgendaComponent } from './components/agenda/agenda.component';
+import { ArquivoComponent } from './components/arquivo/arquivo.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent,canActivate: [AuthGuard] },
+  { path: 'agenda', component: AgendaComponent,canActivate: [AuthGuard] },
+  { path: 'arquivo', component: ArquivoComponent,canActivate: [AuthGuard] },
+  { path: 'projects', component: ProjectsComponent,canActivate: [AuthGuard] },
   { path: "project/:id", component: DashProjectComponent, canActivate: [AuthGuard] },
 ];
 
