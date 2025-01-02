@@ -1,7 +1,8 @@
 <mat-card class="home mat-elevation-z3 container">
-  <mat-card-title class="title">
-    Organizze
-  </mat-card-title>
+  <span>
+    <img class="logo" src="../assets/organizzelogo.png" alt="logo">
+  </span>
+
   <mat-card-subtitle class="subtitle mb-3">
     Organize seus projetos!
   </mat-card-subtitle>
@@ -13,13 +14,16 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Senha</mat-label>
-      <input matInput formControlName="password" type="password" placeholder="Senha" [type]="hide ? 'password' : 'text'">
-      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <input matInput formControlName="password" type="password" placeholder="Senha"
+        [type]="hide ? 'password' : 'text'">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide">
         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Entrar</button>
+    <button mat-raised-button color="primary" type="submit" class="btn-padrao"
+      [disabled]="!loginForm.valid">Entrar</button>
 
     <div class="menus">
       <a routerLink="/forgot-password">Esqueci a senha </a>
@@ -30,7 +34,7 @@
 </mat-card>
 <mat-toolbar class="footer">
   <span>
-      Desenvolvido por <strong>Ostroski!</strong>
+    Desenvolvido por <strong>Ostroski!</strong>
   </span>
 
 </mat-toolbar>
