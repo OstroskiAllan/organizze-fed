@@ -13,6 +13,8 @@ import { Projeto } from 'src/app/models/projeto.model';
 })
 export class ProjectsCreateComponent implements OnInit {
   novoProjetoForm!: FormGroup;
+  semDataInicio = false;
+  semDataFim = false;
 
   constructor(
     private router: Router,
@@ -27,18 +29,49 @@ export class ProjectsCreateComponent implements OnInit {
       nome: ['', Validators.required],
       descricao: [''],
       dataInicio: ['', [Validators.required]],
-      dataFim: ['', [Validators.required]]
-    },);
+      dataFim: ['', [Validators.required]],
+      semDataInicio: [false],
+      semDataFim: [false]
+    });
+
+    this.novoProjetoForm.get('semDataInicio')?.valueChanges.subscribe((checked) => {
+      this.toggleDataInicio(checked);
+    });
+
+    this.novoProjetoForm.get('semDataFim')?.valueChanges.subscribe((checked) => {
+      this.toggleDataFim(checked);
+    });
   }
 
+  toggleDataInicio(checked: boolean): void {
+    this.semDataInicio = checked;
+    const dataInicioControl = this.novoProjetoForm.get('dataInicio');
+    if (checked) {
+      dataInicioControl?.clearValidators();
+    } else {
+      dataInicioControl?.setValidators(Validators.required);
+    }
+    dataInicioControl?.updateValueAndValidity();
+  }
 
-  salvarProjeto() {
+  toggleDataFim(checked: boolean): void {
+    this.semDataFim = checked;
+    const dataFimControl = this.novoProjetoForm.get('dataFim');
+    if (checked) {
+      dataFimControl?.clearValidators();
+    } else {
+      dataFimControl?.setValidators(Validators.required);
+    }
+    dataFimControl?.updateValueAndValidity();
+  }
+
+  salvarProjeto(): void {
     if (this.novoProjetoForm.valid) {
       const novoProjeto: Projeto = {
         nome: this.novoProjetoForm.get('nome')!.value,
         descricao: this.novoProjetoForm.get('descricao')!.value,
-        dataInicio: this.novoProjetoForm.get('dataInicio')!.value,
-        dataFim: this.novoProjetoForm.get('dataFim')!.value
+        dataInicio: this.semDataInicio ? null : this.novoProjetoForm.get('dataInicio')!.value,
+        dataFim: this.semDataFim ? null : this.novoProjetoForm.get('dataFim')!.value
       };
 
       this.projectService.create(novoProjeto).subscribe(
@@ -54,20 +87,12 @@ export class ProjectsCreateComponent implements OnInit {
     }
   }
 
-  reload() {
+  reload(): void {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['projects']);
     });
   }
 
-  // formatarData(data: Date) {
-  //   if (data instanceof Date) {
-  //     return formatDate(data, 'yyyy-MM-dd', 'en-US'); // Formata a data no formato desejado
-  //   } else {
-  //     // Se a data for uma string, assume-se que já está no formato desejado
-  //     return data;
-  //   }
-  // }
   closeDialog(): void {
     this.dialogRef.close();
   }

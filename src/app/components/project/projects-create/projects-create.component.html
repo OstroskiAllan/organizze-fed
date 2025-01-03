@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Criar novo Projeto</h2>
-<div mat-dialog-content >
+<div mat-dialog-content>
 
     <form [formGroup]="novoProjetoForm">
         <mat-form-field class="input">
@@ -8,22 +8,22 @@
 
         <mat-form-field class="input">
             <label for="descricao">Observações: </label>
-            <textarea matInput formControlName="descricao" placeholder="Detalhes sobre o projeto" name="observacoes"></textarea>
+            <textarea matInput formControlName="descricao" placeholder="Detalhes sobre o projeto"
+                name="observacoes"></textarea>
         </mat-form-field>
-        <div class="datas">
-        <mat-form-field>
-            <label for="dataInicio">Data Inicio: </label>
-            <input type="date" matInput formControlName="dataInicio" placeholder="Data de Início" name="dataInicio">
-        </mat-form-field>
-        
-        <mat-form-field>
-            <label for="dataFim">Data fim: </label>
-            <input type="date" matInput formControlName="dataFim" placeholder="Data fim" name="dataFim">
-        </mat-form-field>
-    </div>
+        <div class="datas"> <mat-checkbox formControlName="semDataInicio" (change)="toggleDataInicio($event.checked)">
+                Sem data de início </mat-checkbox> <mat-form-field *ngIf="!semDataInicio"> <label for="dataInicio">Data
+                    Início: </label> <input type="date" matInput formControlName="dataInicio"
+                    placeholder="Data de Início" name="dataInicio"> </mat-form-field> </div>
+        <div class="datas"> <mat-checkbox formControlName="semDataFim" (change)="toggleDataFim($event.checked)"> Sem
+                data de fim </mat-checkbox> <mat-form-field *ngIf="!semDataFim"> <label for="dataFim">Data Fim: </label>
+                <input type="date" matInput formControlName="dataFim" placeholder="Data Fim" name="dataFim">
+            </mat-form-field>
+        </div>
     </form>
 </div>
 <div mat-dialog-actions style="padding-left: 15px;">
     <button mat-button (click)="closeDialog()">Cancelar</button>
-    <button mat-button type="submit" (click)="salvarProjeto()"  cdkFocusInitial color="primary" style="background-color:  #537cf7 !important; color: white !important;">Salvar</button>
+    <button mat-button type="submit" (click)="salvarProjeto()" cdkFocusInitial color="primary" class="btn-padrao"
+        [disabled]="!novoProjetoForm.valid">Salvar</button>
 </div>

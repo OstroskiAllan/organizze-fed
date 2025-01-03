@@ -1,19 +1,22 @@
 <app-header></app-header>
-<div class="content">
-    <mat-card class="dash mat-elevation-z3">
+<div class="container-conteudo">
+    <nav-bar class="nav-bar"></nav-bar>
+    <div class="content">
+        <mat-card class="dash mat-elevation-z3">
 
-        <mat-card-title class="title">
-            Dashboard de Projetos!
-        </mat-card-title>
-        <mat-card-subtitle class="subtitle">
-            Sistema para teste de tabelas de clica e arrasta!
-        </mat-card-subtitle>
+            <mat-card-title class="title">
+                Dashboard de Projetos!
+            </mat-card-title>
+            <mat-card-subtitle class="subtitle">
+                Sistema para teste de tabelas de clica e arrasta!
+            </mat-card-subtitle>
 
-        <button mat-raised-button (click)="openDialog()" color="primary">
-            Novo Projeto
-        </button>
-    </mat-card>
-    <br>
-    <app-projects-read></app-projects-read>
+            <button mat-raised-button (click)="openDialog()" color="primary">
+                Novo Projeto
+            </button>
+        </mat-card>
+        <br>
+        <app-projects-read></app-projects-read>
+    </div>
 </div>
-<nav-bar></nav-bar>
+
