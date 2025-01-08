@@ -43,8 +43,6 @@ import { DashProjectComponent } from './components/dash-project/dash-project.com
 import { TaskComponent } from './components/task/task/task.component';
 import { TeamComponent } from './components/team/team/team.component';
 import { TaskboardComponent } from './components/taskboard/taskboard/taskboard.component';
-import { TesteDashComponent } from './teste-dash/teste-dash.component';
-import { TesteDragComponent } from './teste-drag/teste-drag.component';
 import { TaskCreateComponent } from './components/task/task-create/task-create.component';
 import { TeamDelegateComponent } from './components/team/team-delegate/team-delegate.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -73,8 +71,6 @@ import { ArquivoComponent } from './components/arquivo/arquivo.component';
     DashProjectComponent,
     TeamComponent,
     TaskboardComponent,
-    TesteDashComponent,
-    TesteDragComponent,
     TaskCreateComponent,
     TeamDelegateComponent,
     AgendaComponent,
