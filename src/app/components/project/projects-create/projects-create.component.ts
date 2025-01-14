@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { Projeto } from 'src/app/models/projeto.model';
+import { dateRangeValidator, startDateValidator } from 'src/app/core/validator/date-validator';
 
 @Component({
   selector: 'app-projects-create',
@@ -28,11 +29,11 @@ export class ProjectsCreateComponent implements OnInit {
     this.novoProjetoForm = this.formBuilder.group({
       nome: ['', Validators.required],
       descricao: [''],
-      dataInicio: ['', [Validators.required]],
-      dataFim: ['', [Validators.required]],
+      dataInicio: ['', [startDateValidator]],
+      dataFim: [''],
       semDataInicio: [false],
       semDataFim: [false]
-    });
+    }, { validators: dateRangeValidator });
 
     this.novoProjetoForm.get('semDataInicio')?.valueChanges.subscribe((checked) => {
       this.toggleDataInicio(checked);
@@ -49,7 +50,7 @@ export class ProjectsCreateComponent implements OnInit {
     if (checked) {
       dataInicioControl?.clearValidators();
     } else {
-      dataInicioControl?.setValidators(Validators.required);
+      dataInicioControl?.setValidators([Validators.required, startDateValidator]);
     }
     dataInicioControl?.updateValueAndValidity();
   }

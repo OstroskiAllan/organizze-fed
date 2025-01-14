@@ -1,6 +1,5 @@
 <h2 mat-dialog-title>Criar novo Projeto</h2>
 <div mat-dialog-content>
-
     <form [formGroup]="novoProjetoForm">
         <mat-form-field class="input">
             <input type="text" matInput formControlName="nome" placeholder="Nome do Projeto" name="Nome">
@@ -11,15 +10,35 @@
             <textarea matInput formControlName="descricao" placeholder="Detalhes sobre o projeto"
                 name="observacoes"></textarea>
         </mat-form-field>
-        <div class="datas"> <mat-checkbox formControlName="semDataInicio" (change)="toggleDataInicio($event.checked)">
-                Sem data de início </mat-checkbox> <mat-form-field *ngIf="!semDataInicio"> <label for="dataInicio">Data
-                    Início: </label> <input type="date" matInput formControlName="dataInicio"
-                    placeholder="Data de Início" name="dataInicio"> </mat-form-field> </div>
-        <div class="datas"> <mat-checkbox formControlName="semDataFim" (change)="toggleDataFim($event.checked)"> Sem
-                data de fim </mat-checkbox> <mat-form-field *ngIf="!semDataFim"> <label for="dataFim">Data Fim: </label>
+
+        <div class="datas">
+            <mat-checkbox formControlName="semDataInicio" (change)="toggleDataInicio($event.checked)">
+                Sem data de início
+            </mat-checkbox>
+            <mat-form-field *ngIf="!semDataInicio">
+                <label for="dataInicio">Data Início: </label>
+                <input type="date" matInput formControlName="dataInicio" placeholder="Data de Início" name="dataInicio">
+            </mat-form-field>
+        </div>
+        
+        <div class="datas">
+            <mat-checkbox formControlName="semDataFim" (change)="toggleDataFim($event.checked)">
+                Sem data de fim
+            </mat-checkbox>
+            <mat-form-field *ngIf="!semDataFim">
+                <label for="dataFim">Data Fim: </label>
                 <input type="date" matInput formControlName="dataFim" placeholder="Data Fim" name="dataFim">
             </mat-form-field>
         </div>
+        <mat-error *ngIf="novoProjetoForm.get('dataInicio')?.hasError('startDateInvalid')">
+            A data de início não pode ser anterior à data atual.
+        </mat-error>
+        <mat-error *ngIf="novoProjetoForm.hasError('dateRangeInvalid')">
+            A data de fim não pode ser anterior à data de início.
+        </mat-error>
+        <mat-error *ngIf="novoProjetoForm.get('dataFim')?.hasError('endDateInvalid')">
+            A data de fim não pode ser anterior à data atual.
+        </mat-error>
     </form>
 </div>
 <div mat-dialog-actions style="padding-left: 15px;">
