@@ -1,29 +1,45 @@
 <h2 mat-dialog-title>Criar nova Tarefa</h2>
 <div mat-dialog-content>
-
     <form [formGroup]="novaTarefaForm">
-
         <mat-form-field class="input" appearance="fill">
-            <mat-label>Nome do Tarefa</mat-label>
-            <input matInput formControlName="nome" placeholder="Nome do Tarefa">
+            <mat-label>Nome da Tarefa</mat-label>
+            <input matInput formControlName="nome" placeholder="Nome da Tarefa" name="nome">
         </mat-form-field>
 
         <mat-form-field class="input" appearance="fill">
             <mat-label>Observações</mat-label>
-            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre o Tarefa"></textarea>
+            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre o Tarefa" name="observacoes"></textarea>
         </mat-form-field>
 
         <div class="datas">
-            <mat-form-field appearance="fill">
-                <mat-label>Data Inicio</mat-label>
-                <input matInput type="date" formControlName="dataInicio" placeholder="Data de Início">
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-                <mat-label>Data Fim</mat-label>
-                <input matInput type="date" formControlName="dataFim" placeholder="Data Fim">
+            <mat-checkbox formControlName="semDataInicio" (change)="toggleDataInicio($event.checked)">
+                Sem data de início
+            </mat-checkbox>
+            <mat-form-field *ngIf="!semDataInicio">
+                <label for="dataInicio">Data Início: </label>
+                <input type="date" matInput  formControlName="dataCriacao" placeholder="Data de Início" name="dataCriacao">
             </mat-form-field>
         </div>
+
+        <div class="datas">
+            <mat-checkbox formControlName="semDataEntrega" (change)="toggleDataEntrega($event.checked)">
+                Sem data de entrega
+            </mat-checkbox>
+            <mat-form-field *ngIf="!semDataEntrega">
+                <label for="dataEntrega">Data Entrega: </label>
+                <input type="date" matInput formControlName="dataEntrega" placeholder="Data entrega" name="dataEntrega">
+            </mat-form-field>
+        </div>
+        <mat-error *ngIf="novaTarefaForm.get('dataInicio')?.hasError('startDateInvalid')">
+            A data de início não pode ser anterior à data atual.
+        </mat-error>
+        <mat-error *ngIf="novaTarefaForm.hasError('dateRangeInvalid')">
+            A data de entrega não pode ser anterior à data de início.
+        </mat-error>
+        <mat-error *ngIf="novaTarefaForm.get('dataEntrega')?.hasError('endDateInvalid')">
+            A data de entrega não pode ser anterior à data atual.
+        </mat-error>
+
         <br>
         <div>
             <team-delegate></team-delegate>

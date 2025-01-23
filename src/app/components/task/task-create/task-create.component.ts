@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { TaskService } from './../task.service';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Tarefa } from 'src/app/models/tarefa.model';
 import { TaskComponent } from '../task/task.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { dateRangeValidator, startDateValidator } from 'src/app/core/validator/date-validator';
 
 @Component({
   selector: 'app-task-create',
@@ -12,21 +14,40 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TaskCreateComponent implements OnInit {
   novaTarefaForm!: FormGroup;
+  semDataInicio = false;
+  semDataEntrega = false;
+  projetoId!: number;
+
 
   constructor(
-    public dialogRef: MatDialogRef<TaskComponent>,
-    private formBuilder: FormBuilder
-  ) { }
+    public dialogRef: MatDialogRef<TaskCreateComponent>,
+    private formBuilder: FormBuilder,
+    private tarefaService: TaskService,
+    private router: Router,
+    private route: ActivatedRoute,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ){ this.projetoId = data.projetoId;}
 
   ngOnInit(): void {
     this.novaTarefaForm = this.formBuilder.group({
       nome: ['', Validators.required],
       observacoes: ['', Validators.required],
-      dataInicio: ['', Validators.required],
-      dataFim: ['', Validators.required],
+      dataCriacao: ['', [startDateValidator]],
+      dataEntrega: [''],
       statusId: [1, Validators.required] // Definindo o status padrão como 1 (Analise)
+    },{ validators: dateRangeValidator });
+
+    this.novaTarefaForm.get('semDataInicio')?.valueChanges.subscribe((checked) => {
+      this.toggleDataInicio(checked);
     });
+
+    this.novaTarefaForm.get('semDataEntrega')?.valueChanges.subscribe((checked) => {
+      this.toggleDataEntrega(checked);
+    });
+
+    console.log("testeeeeee capetin ---------------"+ this.projetoId);
   }
+
   salvarTarefa() {
     if (this.novaTarefaForm.valid) {
       const novaTarefa: Tarefa = {
@@ -34,17 +55,52 @@ export class TaskCreateComponent implements OnInit {
         observacoes: this.novaTarefaForm.get('observacoes')!.value,
         dataCriacao: new Date(), // Definindo a data de criação como a data atual
         dataEntrega: this.novaTarefaForm.get('dataEntrega')!.value,
-        //projetoId: null, // Defina o ID do projeto se necessário
+        projetoId: this.projetoId, // Defina o ID do projeto se necessário
         statusId: this.novaTarefaForm.get('statusId')!.value,
-        //usuarioId:  // Defina o ID do usuário se necessário
+        //usuarioId:  1// Defina o ID do usuário se necessário
       };
-      // Lógica para salvar a tarefa (provavelmente uma chamada ao serviço)
-      // Exemplo: this.tarefaService.criarTarefa(novaTarefa).subscribe(...);
-      this.dialogRef.close(novaTarefa);
+      this.tarefaService.create(novaTarefa).subscribe(
+        data => {
+          this.tarefaService.showMessage("Tarefa cadastrada com sucesso!");
+          this.closeDialog();
+
+          this.reload();
+        },
+        error => {
+          this.tarefaService.showMessage("Erro ao cadastrar tarefa!");
+          console.error(error);
+        }
+      );
     }
+  }
+
+  reload(): void {
+     window.location.reload();
   }
 
   closeDialog(): void {
     this.dialogRef.close();
   }
+
+  toggleDataInicio(checked: boolean): void {
+      this.semDataInicio = checked;
+      const dataInicioControl = this.novaTarefaForm.get('dataInicio');
+      if (checked) {
+        dataInicioControl?.clearValidators();
+      } else {
+        dataInicioControl?.setValidators([Validators.required, startDateValidator]);
+      }
+      dataInicioControl?.updateValueAndValidity();
+    }
+  
+    toggleDataEntrega(checked: boolean): void {
+      this.semDataEntrega = checked;
+      const dataEntregaControl = this.novaTarefaForm.get('dataEntrega');
+      if (checked) {
+        dataEntregaControl?.clearValidators();
+      } else {
+        dataEntregaControl?.setValidators(Validators.required);
+      }
+      dataEntregaControl?.updateValueAndValidity();
+    }
 }
