@@ -1,3 +1,4 @@
+import { TeamService } from './../../team/team.service';
 import { Projeto } from './../../../models/projeto.model';
 import { UsuarioProjeto } from './../../../models/usuarioprojeto.model';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
@@ -9,24 +10,30 @@ import { ProjectService } from '../project.service';
 import { ModalConfirmacaoComponent } from 'src/app/views/template/modal-confirmacao/modal-confirmacao.component';
 import { AuthService } from '../../auth/auth.service';
 import { forkJoin, map } from 'rxjs';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+
 
 @Component({
   selector: 'app-projects-read',
   templateUrl: './projects-read.component.html',
   styleUrls: ['./projects-read.component.scss']
 })
-export class ProjectsReadComponent  implements OnInit, AfterViewInit {
+export class ProjectsReadComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   displayedColumns: string[] = ['nome', 'descricao', 'data_inicio', 'data_fim']; // codigo verificar depois -- adicionar depois a data criaçao
   projectColumns: string[] = ['nome', 'descricao', 'cargo'];
   projetos: any[] = [];
-  projetosPart:  UsuarioProjeto[] = [];
+  projetosPart: UsuarioProjeto[] = [];
   totalItems!: number;
   totalIPart!: number;
   totalItemsPart!: boolean;
-  @ViewChild(MatSort) sort: MatSort | undefined;
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 
-  constructor(private authService: AuthService, private projectService: ProjectService, private router: Router, public dialog: MatDialog) { }
+  constructor(private authService: AuthService, private projectService: ProjectService,private teamService: TeamService ,private router: Router, public dialog: MatDialog) {
+
+  }
 
   currentUser = this.authService.getUser();
   idUser = this.currentUser.id;
@@ -36,11 +43,21 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
     this.carregarProjetosPart(this.idUser);
   }
 
-  ngAfterViewInit(): void {
-    // Configurar MatSort e MatPaginator após a visualização dos componentes
-    if (this.sort && this.paginator) {
-      this.sort.sortChange.subscribe(() => this.carregarProjetos());
-      this.paginator.page.subscribe(() => this.carregarProjetos());
+  // ngAfterViewInit(): void {
+  //   // Configurar MatSort e MatPaginator após a visualização dos componentes
+  //   if (this.sort && this.paginator) {
+  //     this.sort.sortChange.subscribe(() => this.carregarProjetos());
+  //     this.paginator.page.subscribe(() => this.carregarProjetos());
+  //   }
+  // }
+
+  ngAfterViewInit(): void { 
+    if (this.sort && this.paginator) { 
+      this.sort.sortChange.subscribe(() => { 
+        this.paginator.pageIndex = 0; 
+        this.carregarProjetos(); 
+      }); 
+        this.paginator.page.subscribe(() => this.carregarProjetos()); 
     }
   }
 
@@ -59,11 +76,8 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
     );
   }
 
-
-
-
   carregarProjetosPart(idUser: number) {
-    this.projectService.getProjetoPart(idUser).subscribe(
+    this.teamService.getProjetoPart(idUser).subscribe(
       (projetosPart: UsuarioProjeto[]) => {
         const requests = projetosPart.map(projetoPart =>
           this.projectService.getProjetoById(projetoPart.projetoId).pipe(
@@ -73,7 +87,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
             })
           )
         );
-  
+
         forkJoin(requests).subscribe(
           (result: UsuarioProjeto[]) => {
             this.projetosPart = result;
@@ -91,8 +105,6 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
     );
   }
 
-
-
   abrirDialogoConfirmacao(projetoId: number): void {
     const dialogRef = this.dialog.open(ModalConfirmacaoComponent);
 
@@ -103,6 +115,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
       }
     });
   }
+
   deleteProjeto(projetoId: number): void {
     this.projectService.deleteProjeto(projetoId).subscribe(() => {
       this.projectService.showMessage('Projeto excluído com sucesso!');
@@ -112,7 +125,7 @@ export class ProjectsReadComponent  implements OnInit, AfterViewInit {
     });
   }
 
-  abrirDetalhes(projetoId: number): void{
+  abrirDetalhes(projetoId: number): void {
     this.router.navigate(['/project/', projetoId]);
   }
 

@@ -49,7 +49,7 @@
                     </ng-container>
                     
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="abrirDetalhes(row.id)"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="abrirDetalhes(row.id)"></tr>
                 </table>
                 <div *ngIf="totalItems > 4">
                     <mat-paginator #paginator [length]="totalItems" [pageIndex]="0" [pageSize]="6"
@@ -106,7 +106,7 @@
 
 
                     <tr mat-header-row *matHeaderRowDef="projectColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: projectColumns;" (click)="abrirDetalhes(row.projetoId)">
+                    <tr mat-row *matRowDef="let row; columns: projectColumns;" (dblclick)="abrirDetalhes(row.projetoId)">
                     </tr>
                 </table>
                 <div *ngIf="totalItems > 4">

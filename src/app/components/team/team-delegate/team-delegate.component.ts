@@ -5,6 +5,7 @@ import { map, forkJoin } from 'rxjs';
 import { UsuarioProjeto } from 'src/app/models/usuarioprojeto.model';
 import { ProjectService } from '../../project/project.service';
 import { TeamComponent } from '../team/team.component';
+import { TeamService } from '../team.service';
 
 @Component({
   selector: 'team-delegate',
@@ -23,6 +24,7 @@ export class TeamDelegateComponent implements OnInit {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<TeamComponent>,
     public projetoService: ProjectService,
+    public teamService: TeamService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.projetoId = data.projetoId;
@@ -36,7 +38,7 @@ export class TeamDelegateComponent implements OnInit {
   }
  
   carregarTeam(idProjeto: number) {
-    this.projetoService.getTeamProjetoId(idProjeto).subscribe(
+    this.teamService.getTeamProjetoId(idProjeto).subscribe(
       (team: UsuarioProjeto[]) => {
         // Array de observáveis para obter os nomes dos usuários
         const requests = team.map(usuario =>

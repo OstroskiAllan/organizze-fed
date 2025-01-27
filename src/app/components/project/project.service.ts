@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Projeto } from 'src/app/models/projeto.model';
 import { UsuarioProjeto } from 'src/app/models/usuarioprojeto.model';
 
@@ -45,21 +45,14 @@ export class ProjectService {
     return this.http.get<Projeto>(url, {headers});
   }
 
-  getProjetoPart(id: number): Observable<UsuarioProjeto[]>{
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `${token}`);
-    const url = `${this.apiUrl}/part/${id}`
 
-    return this.http.get<UsuarioProjeto[]>(url, {headers})
-  }
+  // TESTAR DEPOIS
+  // updateProjeto(projeto: Projeto): Observable<Projeto> {
+  //   const token = localStorage.getItem('token');
+  //   const headers = new HttpHeaders().set('Authorization', `${token}`);
 
-  getTeamProjetoId(id: number): Observable<UsuarioProjeto[]>{
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `${token}`);
-    const url = `${this.apiUrl}/${id}/team`
-
-    return this.http.get<UsuarioProjeto[]>(url, { headers });
-  }
+  //   return this.http.put<Projeto>(this.apiUrl, projeto, { headers });
+  // }
   
   getUserNameById(userId: number): Observable<string> {
     const token = localStorage.getItem('token');
@@ -77,11 +70,4 @@ export class ProjectService {
 
     return this.http.delete<Projeto>(url, { headers });
   }
-/*
-  
-  getTabelasDoProjeto(projetoId: number): Observable<Tabela[]> {
-    const url = `${this.apiUrl}/dash/${projetoId}`; 
-    return this.http.get<Tabela[]>(url);
-  }
- */
 }
