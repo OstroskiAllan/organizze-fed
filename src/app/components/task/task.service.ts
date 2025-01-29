@@ -11,9 +11,12 @@ import { Tarefa } from 'src/app/models/tarefa.model';  // Certifique-se de impor
 export class TaskService {
 
   apiUrl = 'http://localhost:8080/tarefa'; // Ajuste a URL da API conforme necessário
+  apiPro = 'http://localhost:8080/projeto'; // Ajuste a URL da API conforme necessário
   headers = new HttpHeaders().set('Authorization', `${localStorage.getItem('token')}`);
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  constructor(
+    private http: HttpClient, 
+    private snackBar: MatSnackBar) { }
 
   showMessage(msg: string): void {
     this.snackBar.open(msg, 'x', {
@@ -37,7 +40,7 @@ export class TaskService {
         nome: tarefa.nome,
         observacoes: tarefa.observacoes,
         dataCriacao: new Date(tarefa.dataCriacao),
-        dataEntrega: new Date(tarefa.dataEntrega),
+        dataEntrega: tarefa.dataEntrega ? new Date(tarefa.dataEntrega) : null,
         projetoId: tarefa.projetoId,
         statusId: tarefa.statusId,
         usuarioId: tarefa.usuarioId
@@ -60,4 +63,11 @@ export class TaskService {
     return this.http.put<Tarefa>(url, tarefa, { headers });
   }
 
+
+    getNome(id: any): Observable<any[]>{
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const url = `${this.apiPro}/${id}/nome`;
+      return this.http.get<any[]>(url, { headers, responseType: 'text' as 'json' });
+    }
 }

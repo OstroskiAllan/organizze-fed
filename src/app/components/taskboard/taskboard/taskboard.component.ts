@@ -3,13 +3,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Projeto } from 'src/app/models/projeto.model';
 import { Tarefa } from 'src/app/models/tarefa.model';
-import { Usuario } from 'src/app/models/usuario.model';
-import { ProjectService } from '../../project/project.service';
-import { TaskCreateComponent } from '../../task/task-create/task-create.component';
 import { TaskService } from '../../task/task.service';
-import { TeamComponent } from '../../team/team/team.component';
 
 
 @Component({
@@ -51,7 +46,19 @@ export class TaskboardComponent implements OnInit {
       (response) => {
         // Aqui você pode manipular a resposta
         this.response = response
+        console.log('Tarefas carregadas:', response);
         this.distribuirTarefas(response);
+
+        response.forEach(tarefa => {
+          this.taskservice.getNome(tarefa.usuarioId).subscribe(
+            (nomeResponse) => {
+              tarefa.nomeUsuario = nomeResponse;
+            },
+            (error) => {
+              console.error('Erro ao carregar nome do usuário:', error);
+            }
+          );
+        });
       },
       (error) => {
         // Tratar erros

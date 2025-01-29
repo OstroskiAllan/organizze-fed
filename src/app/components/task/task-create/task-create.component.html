@@ -8,16 +8,18 @@
 
         <mat-form-field class="input" appearance="fill">
             <mat-label>Observações</mat-label>
-            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre o Tarefa" name="observacoes"></textarea>
+            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre o Tarefa"
+                name="observacoes"></textarea>
         </mat-form-field>
 
         <div class="datas">
             <mat-checkbox formControlName="semDataInicio" (change)="toggleDataInicio($event.checked)">
-                Sem data de início
+                Data atual
             </mat-checkbox>
             <mat-form-field *ngIf="!semDataInicio">
                 <label for="dataInicio">Data Início: </label>
-                <input type="date" matInput  formControlName="dataCriacao" placeholder="Data de Início" name="dataCriacao">
+                <input type="date" matInput formControlName="dataCriacao" placeholder="Data de Início"
+                    name="dataCriacao">
             </mat-form-field>
         </div>
 
@@ -42,7 +44,10 @@
 
         <br>
         <div>
-            <team-delegate></team-delegate>
+            <team-delegate 
+                [numberProjeto]="idDoProjeto" 
+                (usuarioSelecionado)="onUsuarioSelecionado($event)">
+            </team-delegate>
         </div>
     </form>
     <div mat-dialog-actions style="padding: 0px;">

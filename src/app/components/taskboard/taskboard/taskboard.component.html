@@ -15,7 +15,11 @@
     <div cdkDropList #todoList="cdkDropList" id="ToDo" [cdkDropListData]="todo"
       [cdkDropListConnectedTo]="['Doing']" class="list" (cdkDropListDropped)="drop($event, 'ToDo')">
       <div class="list-item" *ngFor="let item of todo" cdkDrag>
-        {{item.nome}}
+        <mat-label> <strong>Nome:</strong> {{item.nome}}</mat-label>
+        <ng-container>
+          <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
+          <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
+        </ng-container>
         <button mat-button (click)="viewTaskDetails(item)">Ver</button>
       </div>
     </div>
@@ -26,7 +30,11 @@
     <div cdkDropList #doingList="cdkDropList" id="Doing" [cdkDropListData]="doing"
       [cdkDropListConnectedTo]="['ToDo', 'Analyzing']" class="list" (cdkDropListDropped)="drop($event, 'Doing')">
       <div class="list-item" *ngFor="let item of doing" cdkDrag>
-        {{item.nome}}
+        <mat-label> <strong>Nome:</strong> {{item.nome}}</mat-label>
+        <ng-container>
+          <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
+          <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
+        </ng-container>
         <button mat-button (click)="viewTaskDetails(item)">Ver</button>
       </div>
     </div>
@@ -37,7 +45,11 @@
     <div cdkDropList #analyzingList="cdkDropList" id="Analyzing" [cdkDropListData]="analyzing"
       [cdkDropListConnectedTo]="['Doing', 'Done']" class="list" (cdkDropListDropped)="drop($event, 'Analyzing')">
       <div class="list-item" *ngFor="let item of analyzing" cdkDrag>
-        {{item.nome}}
+        <mat-label> <strong>Nome:</strong> {{item.nome}}</mat-label>
+        <ng-container>
+          <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
+          <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
+        </ng-container>
         <button mat-button (click)="viewTaskDetails(item)">Ver</button>
       </div>
     </div>
@@ -49,7 +61,11 @@
     [cdkDropListConnectedTo]="['analyzing']" class="list" (cdkDropListDropped)="drop($event, 'Done')">
 
       <div class="list-item" *ngFor="let item of (isDoneExpanded ? done : done | slice:0:maxVisibleItems)" cdkDrag>
-        {{item.nome}}
+        <mat-label> <strong>Nome:</strong> {{item.nome}}</mat-label>
+        <ng-container>
+          <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
+          <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
+        </ng-container>
         <button mat-button (click)="viewTaskDetails(item)">Ver</button>
       </div>
 

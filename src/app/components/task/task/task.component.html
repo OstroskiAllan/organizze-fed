@@ -34,8 +34,13 @@
       </mat-form-field>
 
       <div *ngIf="!isEditing">
-        <strong>Data de Entrega:</strong> {{ taskForm.get('dataEntrega')?.value | date }}<br>
-        <button class="btnEdit" mat-button (click)="toggleEdit('dataEntrega')">Editar</button>
+        <strong>Data de Entrega:</strong> 
+        <span *ngIf="!taskForm.get('dataEntrega')?.value">Nenhuma data de entrega definida</span>
+        <span *ngIf="taskForm.get('dataEntrega')?.value"> {{ taskForm.get('dataEntrega')?.value | date }}</span>
+        <br>
+        <button mat-button class="btnEdit" *ngIf="!taskForm.get('dataEntrega')?.value" (click)="toggleEdit('dataEntrega')">Adicionar</button>
+        
+        <button mat-button class="btnEdit" *ngIf="taskForm.get('dataEntrega')?.value" (click)="toggleEdit('dataEntrega')">Editar</button>
       </div>
       <mat-form-field *ngIf="isEditing === 'dataEntrega'" appearance="fill">
         <mat-label>Data de Entrega</mat-label>
@@ -43,13 +48,27 @@
       </mat-form-field>
     </div>
 
-    <br>
+   
     <ng-container *ngIf="!isEditing">
-      <!-- Componente para selecionar membros -->
-      <team-delegate></team-delegate>
+      <!-- Componente para selecionar membros - terminar depois-->
+      <strong>Responsável:</strong>  {{ usuarioNome }}<br>
+      <button class="btnEdit" mat-button *ngIf="usuarioNome" (click)="toggleEdit('responsavel')"> Mudar responsável... </button>
+      
+      <team-delegate  
+        [numberProjeto]="idDoProjeto" 
+        (usuarioSelecionado)="onUsuarioSelecionado($event)">
+       </team-delegate>
     </ng-container>
+      <div *ngIf="isEditing === 'responsavel'" appearance="fill">
+        <team-delegate  
+        [numberProjeto]="idDoProjeto" 
+        (usuarioSelecionado)="onUsuarioSelecionado($event)">
+      </team-delegate>
+    </div>
+
+
   </form>
-  
+  <br> 
   <div mat-dialog-actions style="padding: 0px;">
     <button mat-button (click)="closeDialog()">Cancelar</button>
     <button mat-button type="submit" (click)="saveChanges()" [disabled]="taskForm.invalid">Salvar</button>

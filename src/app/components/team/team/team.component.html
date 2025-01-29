@@ -4,7 +4,7 @@
     <mat-card-content>
       <!-- Tabela de Listagem de Membros -->
       <div *ngIf="team.length > 1; else noTeam">
-        <mat-table [dataSource]="team" class="mat-elevation-z4">
+        <mat-table [dataSource]="team" class="mat-elevation-z4" style="border-radius: 5px;">
 
           <!-- Nome Coluna -->
           <ng-container matColumnDef="nome">
@@ -17,6 +17,15 @@
             <mat-header-cell *matHeaderCellDef> Cargo </mat-header-cell>
             <mat-cell *matCellDef="let membro"> {{ membro.cargo }} </mat-cell>
           </ng-container>
+
+          <!-- Ações Coluna -->
+        <ng-container matColumnDef="acoes">
+          <mat-header-cell *matHeaderCellDef>    Ações </mat-header-cell>
+          <mat-cell *matCellDef="let membro">
+            <button mat-button class="btn" (click)="editarMembro(membro)">Editar</button>
+            <button mat-button class="btn" (click)="removerMembro(membro)">Remover</button>
+          </mat-cell>
+        </ng-container>
 
           <!-- Header e Rows -->
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

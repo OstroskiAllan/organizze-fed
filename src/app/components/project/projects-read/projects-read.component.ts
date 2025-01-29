@@ -1,4 +1,3 @@
-import { TeamService } from './../../team/team.service';
 import { Projeto } from './../../../models/projeto.model';
 import { UsuarioProjeto } from './../../../models/usuarioprojeto.model';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
@@ -30,8 +29,9 @@ export class ProjectsReadComponent implements OnInit, AfterViewInit {
   totalItems!: number;
   totalIPart!: number;
   totalItemsPart!: boolean;
+  
 
-  constructor(private authService: AuthService, private projectService: ProjectService,private teamService: TeamService ,private router: Router, public dialog: MatDialog) {
+  constructor(private authService: AuthService, private projectService: ProjectService,private router: Router, public dialog: MatDialog) {
 
   }
 
@@ -77,7 +77,8 @@ export class ProjectsReadComponent implements OnInit, AfterViewInit {
   }
 
   carregarProjetosPart(idUser: number) {
-    this.teamService.getProjetoPart(idUser).subscribe(
+    
+    this.projectService.getProjetoPart(idUser).subscribe(
       (projetosPart: UsuarioProjeto[]) => {
         const requests = projetosPart.map(projetoPart =>
           this.projectService.getProjetoById(projetoPart.projetoId).pipe(

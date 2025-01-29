@@ -1,11 +1,11 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { map, forkJoin } from 'rxjs';
 import { UsuarioProjeto } from 'src/app/models/usuarioprojeto.model';
 import { ProjectService } from '../../project/project.service';
-import { TeamComponent } from '../team/team.component';
-import { TeamService } from '../team.service';
+import { ActivatedRoute } from '@angular/router';
+import { TaskService } from '../../task/task.service';
 
 @Component({
   selector: 'team-delegate',
@@ -13,18 +13,21 @@ import { TeamService } from '../team.service';
   styleUrls: ['./team-delegate.component.scss']
 })
 export class TeamDelegateComponent implements OnInit {
+  @Input() numberProjeto!: number;
+  @Output() usuarioSelecionado = new EventEmitter<number>();
 
   team: UsuarioProjeto[] = [];
   projetoId!: number;
   form: FormGroup;
- 
+  selectedUserId!: number;
+  tarefa: any;
 
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<TeamComponent>,
+    private taskService: TaskService,
     public projetoService: ProjectService,
-    public teamService: TeamService,
+    private route: ActivatedRoute,  // codigo verificar depois
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.projetoId = data.projetoId;
@@ -34,11 +37,19 @@ export class TeamDelegateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.carregarTeam(1); // codigo verificar depois
+    this.carregarTeam(this.numberProjeto); // codigo verificar depois
+    
+
+    this.form.get('selectedMember')?.valueChanges.subscribe((idSelecionado) => {
+      this.selectedUserId = idSelecionado;
+      this.emitirUsuarioSelecionado();
+    });
   }
- 
-  carregarTeam(idProjeto: number) {
-    this.teamService.getTeamProjetoId(idProjeto).subscribe(
+  
+  carregarTeam(numberProjeto: number){
+    if (!this.numberProjeto) return;
+
+    this.projetoService.getTeamProjetoId(numberProjeto).subscribe(
       (team: UsuarioProjeto[]) => {
         // Array de observáveis para obter os nomes dos usuários
         const requests = team.map(usuario =>
@@ -49,7 +60,6 @@ export class TeamDelegateComponent implements OnInit {
             })
           )
         );
-
         // Executa todas as requisições e aguarda a conclusão
         forkJoin(requests).subscribe(
           (result: UsuarioProjeto[]) => {
@@ -67,6 +77,27 @@ export class TeamDelegateComponent implements OnInit {
     );
   }
 
+  emitirUsuarioSelecionado(){
+    const selectUserId = this.form.get('selectedMember')?.value;
+    this.usuarioSelecionado.emit(selectUserId);
+  }
+
+  atualizarTarefa(): void {
+    if (this.selectedUserId) {
+      this.tarefa.usuarioId = this.selectedUserId;
+    }
+
+    this.taskService.update(this.tarefa).subscribe(
+      (updatedTask) => {
+        console.log('Tarefa atualizada com sucesso:', updatedTask);
+      },
+      (erro) => {
+        console.error('Erro ao atualizar a tarefa:', erro);
+      }
+    );
+  }
+
+  
   // get selectedMember() {
   //   return this.form.get('selectedMember')?.value;
   // }

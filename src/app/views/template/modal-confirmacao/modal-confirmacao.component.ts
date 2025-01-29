@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-modal-confirmacao',
@@ -8,15 +8,18 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ModalConfirmacaoComponent {
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public dialogRef: MatDialogRef<ModalConfirmacaoComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) { }
 
 
-  openDeleteDialog(projetoId: number): void {
+  openCondicaoDialog(texto: string): Promise<boolean> {
     const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
       width: '250px',
-      data: { projetoId: projetoId }
+      data: { texto: texto }
     });
-
+    return dialogRef.afterClosed().toPromise();
   }
+  
 }
