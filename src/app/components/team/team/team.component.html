@@ -22,8 +22,8 @@
         <ng-container matColumnDef="acoes">
           <mat-header-cell *matHeaderCellDef>    Ações </mat-header-cell>
           <mat-cell *matCellDef="let membro">
-            <button mat-button class="btn" (click)="editarMembro(membro)">Editar</button>
-            <button mat-button class="btn" (click)="removerMembro(membro)">Remover</button>
+            <button mat-button><a  (click)="editarMembro(membro)"><i class="material-icons v-middle" style="color: #537cf7;">edit</i></a></button>
+            <button mat-button (click)="removerMembro(membro)"><a><i class="material-icons v-middle" style="color: #537cf7;">delete</i></a></button>
           </mat-cell>
         </ng-container>
 
@@ -67,8 +67,8 @@
             </ng-container>
             
             <mat-card-actions class="buttons-new-member">
-              <button mat-raised-button color="warn" (click)="cancelarAdicao()">Cancelar</button>
-              <button mat-raised-button color="primary" (click)="salvarNovoMembro()">Salvar</button>
+              <button mat-button class="btn-padrao buttonn" (click)="cancelarAdicao()">Cancelar</button>
+              <button mat-button class="btn-padrao buttonn" (click)="salvarNovoMembro()" [disabled]="equipeForm.invalid">Salvar</button>
             </mat-card-actions>
           </form>
         </mat-card-content>
@@ -76,7 +76,7 @@
     </mat-card-content>
 
     <mat-card-actions class="button">
-      <button mat-raised-button color="primary" (click)="fecharDialog()">Fechar</button>
-      <button mat-raised-button color="primary" (click)="toggleAddForm()">Adicionar</button>
+      <button mat-raised-button color="primary" class="buttonn" (click)="fecharDialog()">Fechar</button>
+      <button mat-raised-button color="primary" class="buttonn" (click)="toggleAddForm()">Adicionar</button>
     </mat-card-actions>
   </mat-card>

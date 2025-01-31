@@ -1,3 +1,4 @@
+import { ProjectService } from './../../project/project.service';
 import { TaskService } from './../task.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -17,12 +18,11 @@ export class TaskComponent implements OnInit {
   //usuarioId!: number;
   usuarioNome?: any;
 
-
   constructor(
     public dialogRef: MatDialogRef<TaskComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder,
-    private taskService: TaskService
+    private taskService: TaskService,
   ) {
     this.taskForm = this.fb.group({
       nome: [''],
@@ -44,9 +44,6 @@ export class TaskComponent implements OnInit {
         usuarioId: this.data.task.usuarioId || null
       });
     }
-
-    
-    
     // this.pro = this.data.task.projetoId;
     // console.log( 'aaaaaaaaaaaaaaaaa -----',this.pro);
     // this.checkDataEntrega();
@@ -70,7 +67,7 @@ export class TaskComponent implements OnInit {
   saveChanges(): void {
     if (this.taskForm.valid) {
       const usuarioId = this.taskForm.get('usuarioId')?.value; 
-      console.log('usuarioId:', usuarioId);
+      console.log('usuarioId:', this.taskForm);
       // TODO: Salvar alterações na tarefa
 
       const updatedTask: Tarefa = {
@@ -107,6 +104,7 @@ export class TaskComponent implements OnInit {
     console.log('usuario id', usuarioId);
     
   }
+
   formatDate(date: any): string {
     if (!date) return ''; // Retorna uma string vazia se a data estiver indefinida
 

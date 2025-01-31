@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -48,9 +48,12 @@ import { TeamDelegateComponent } from './components/team/team-delegate/team-dele
 import { MatSelectModule } from '@angular/material/select';
 import { AgendaComponent } from './components/agenda/agenda.component';
 import { ArquivoComponent } from './components/arquivo/arquivo.component';
+import { UsuarioComponent } from './components/usuario/usuario/usuario.component';
+import { UsuarioUpdateComponent } from './components/usuario/usuario-update/usuario-update.component';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
 
-
-
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -75,12 +78,15 @@ import { ArquivoComponent } from './components/arquivo/arquivo.component';
     TeamDelegateComponent,
     AgendaComponent,
     ArquivoComponent,
+    UsuarioComponent,
+    UsuarioUpdateComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    CommonModule,
     HttpClientModule,
     MatButtonModule,
     MatToolbarModule,
@@ -102,9 +108,10 @@ import { ArquivoComponent } from './components/arquivo/arquivo.component';
     CdkAccordionModule,
     MatOptionModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+   
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

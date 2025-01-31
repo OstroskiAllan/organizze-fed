@@ -16,8 +16,7 @@
         <div class="user">
             <button mat-button [matMenuTriggerFor]="menu">Olá! {{ this.primeiroNome }} <i class="material-icons v-middle">expand_more</i> </button>
             <mat-menu #menu="matMenu" >
-                <button mat-menu-item (click)="openDialog('task')">Editar Perfil</button>
-                <button mat-menu-item routerLink="/change-password">Trocar Senha</button>
+                <button mat-menu-item (click)="openDialog('usuario-update')">Editar Perfil</button>
                 <button mat-menu-item (click)="logout()">Logout</button>
                 <!-- Adicione mais itens de menu aqui, se necessário -->
             </mat-menu>

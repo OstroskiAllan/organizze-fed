@@ -10,6 +10,7 @@ import { TaskService } from '../task/task.service';
 import { TaskComponent } from '../task/task/task.component';
 import { TeamComponent } from '../team/team/team.component';
 import { TaskCreateComponent } from '../task/task-create/task-create.component';
+import { ProjectsUpdateComponent } from '../project/projects-update/projects-update.component';
 
 @Component({
   selector: 'dash-project',
@@ -34,17 +35,17 @@ export class DashProjectComponent implements OnInit {
     private tarefaService: TaskService
   ) { }
 
-
-
   ngOnInit(): void {
     //this.carregarTarefas();
     this.carregarDadosProjeto();
     this.projetoId = +this.route.snapshot.params['id'];
   }
+
   carregarDadosProjeto() {
     const projetoId = +this.route.snapshot.params['id'];
     this.projetoService.getProjetoById(projetoId).subscribe(projeto => {
       this.projeto = projeto;
+      this
       // Recupere as tabelas do projeto
       // this.projetoService.getTabelasDoProjeto(projetoId).subscribe(tabela => {
       //   this.tabela = tabela;
@@ -79,20 +80,24 @@ export class DashProjectComponent implements OnInit {
   openDialog(modalType: string): MatDialogRef<any> | undefined {
     let dialogRef: MatDialogRef<any> | undefined;
     const dialogData = { projetoId: this.projetoId }; // Crie um objeto de dados com o ID do projeto
-    const test = +this.route.snapshot.params['id'];
-
+    const dialogDataPro = { projetoId: this.projetoId, projeto: this.projeto };
+    this.projetoId = +this.route.snapshot.params['id'];
     if (modalType === 'task-create') {
       dialogRef = this.dialog.open(TaskCreateComponent, {
         width: '500px',
-        data: test // Aqui você pode passar quaisquer dados necessários para o modal
+        data: dialogData // Aqui você pode passar quaisquer dados necessários para o modal
       });
     } else if (modalType === 'equipe') {
       dialogRef = this.dialog.open(TeamComponent, {
         width: '800px',
         data: dialogData  // Aqui você pode passar quaisquer dados necessários para o modal
       });
+    } else if (modalType === 'projects-update') {
+      dialogRef = this.dialog.open(ProjectsUpdateComponent, {
+        width: '800px',
+        data: dialogDataPro,   // Aqui você pode passar quaisquer dados necessários para o modal
+      });
     }
-
     return dialogRef;
   }
 }

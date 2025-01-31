@@ -42,7 +42,7 @@
     </form>
 </div>
 <div mat-dialog-actions style="padding-left: 15px;">
-    <button mat-button (click)="closeDialog()">Cancelar</button>
+    <button mat-button class="btn-padrao" style="" (click)="closeDialog()">Cancelar</button>
     <button mat-button type="submit" (click)="salvarProjeto()" cdkFocusInitial color="primary" class="btn-padrao"
-        [disabled]="!novoProjetoForm.valid">Salvar</button>
+        [disabled]="!novoProjetoForm.valid" >Salvar</button>
 </div>

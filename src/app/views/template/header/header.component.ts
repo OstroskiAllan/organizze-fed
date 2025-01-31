@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/components/auth/auth.service';
+import { UsuarioUpdateComponent } from 'src/app/components/usuario/usuario-update/usuario-update.component';
 
 @Component({
   selector: 'app-header',
@@ -31,14 +32,12 @@ export class HeaderComponent implements OnInit {
   openDialog(modalType: string): MatDialogRef<any> | undefined {
     let dialogRef: MatDialogRef<any> | undefined;
     
-    // if (modalType === 'task') {
-    //   dialogRef = this.dialog.open(UsuarioEditComponent, {
-    //     width: '600px',
-    //     data: {} // Aqui você pode passar quaisquer dados necessários para o modal
-    //   });
-    // } 
-    
-
+    if (modalType === 'usuario-update') {
+      dialogRef = this.dialog.open(UsuarioUpdateComponent, {
+        width: '600px',
+        data: {} // Aqui você pode passar quaisquer dados necessários para o modal
+      });
+    } 
     return dialogRef;
   }
 

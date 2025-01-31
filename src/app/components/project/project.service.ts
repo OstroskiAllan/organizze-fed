@@ -20,7 +20,7 @@ export class ProjectService {
   }
 
   private handleError(error: any): Observable<never> {
-    this.showMessage('Ocorreu um erro ao processar a solicitação');
+    //this.showMessage('');
     return throwError(error);
   }
 
@@ -37,7 +37,6 @@ export class ProjectService {
     return this.http.get<any[]>(this.apiUrl, { headers: this.getHeaders() })
       .pipe(catchError(this.handleError.bind(this)));
   }
-
 
   create(projeto: Projeto): Observable<Projeto> {
     return this.http.post<Projeto>(this.apiUrl, projeto, { headers: this.getHeaders() })
@@ -77,10 +76,34 @@ export class ProjectService {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `${token}`);
     const url = `${this.apiUrl}/${id}`;
-
+    
     return this.http.delete<Projeto>(url, { headers });
   }
 
+  removeMembro( usuarioId: number, projetoid: number): Observable<UsuarioProjeto> {
+    const url = `${this.apiUrl}/${projetoid}/usuario/${usuarioId}`;
+    return this.http.delete<UsuarioProjeto>(url, { headers: this.getHeaders() })
+  }
+  
+  
+  updateProjeto(projeto: Projeto, id: number): Observable<Projeto> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    const url = `${this.apiUrl}/upprojeto/${id}`;
+
+    return this.http.put<Projeto>(url, projeto, { headers });
+  }
+
+ 
+  updateMembro(projetoId: number, usuarioId: number, cargo: any): Observable<UsuarioProjeto> {
+    const url = `${this.apiUrl}/update/${projetoId}/${usuarioId}`;
+    const body = { 
+      projetoId,  // Enviar projetoId conforme o Postman
+      cargo       // Enviar o cargo atualizado
+    };
+  
+    return this.http.put<UsuarioProjeto>(url, body, { headers: this.getHeaders() });
+  }
 
   //ORGANIZAR MELHOR ISSO AQUI -- ENDPOINT DO TEAM
   addParticipante(email: string, projetoId: any, cargo: string): Observable<UsuarioProjeto> {
@@ -92,19 +115,11 @@ export class ProjectService {
     return this.http.post<UsuarioProjeto>(url, body, { headers }).pipe(
       catchError(error => {
         if (error.status === 403) {
-          return throwError('Participante nao encontrado.');
+          return throwError('Usuário nao encontrado.');
         }
-        return throwError(error);
+        return throwError('Te falei que o neogioc', error);
       })
     );
   }
 }
-
-  // TESTAR DEPOIS
-  // updateProjeto(projeto: Projeto): Observable<Projeto> {
-  //   const token = localStorage.getItem('token');
-  //   const headers = new HttpHeaders().set('Authorization', `${token}`);
-
-  //   return this.http.put<Projeto>(this.apiUrl, projeto, { headers });
-  // }
 

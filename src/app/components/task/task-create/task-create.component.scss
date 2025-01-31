@@ -1,24 +1,35 @@
-/* criar-tarefa-modal.component.css */
 .mat-dialog-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .input {
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  
-  .datas {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .mat-dialog-actions {
-    
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.datas {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mat-dialog-actions {
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-padrao {
+  background-color: #537cf7 !important;
+  color: white;
+}
+
+.btn-padrao:disabled {
+  background-color: #e0e0e0 !important;
+  color: #9e9e9e !important;
+}
+.btn-cancel {
+  color: #ffffff !important;
+  background-color: #a1a1a1 !important;
+}

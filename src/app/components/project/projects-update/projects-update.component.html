@@ -1,1 +1,70 @@
-<p>projects-update works!</p>
+<h2 mat-dialog-title>Editar projeto atual:</h2>
+<div mat-dialog-content>
+    <form [formGroup]="projetoForm">
+        <!-- Nome do Projeto -->
+        <div *ngIf="!isEditing">
+            <strong>Nome do Projeto:</strong> {{ projetoForm.get('nome')?.value }}<br>
+            <button class="btnEdit" mat-button (click)="toggleEdit('nome')">Editar</button>
+        </div>
+        <mat-form-field class="input" *ngIf="isEditing === 'nome'" appearance="fill">
+            <mat-label>Nome do Projeto</mat-label>
+            <input matInput formControlName="nome" placeholder="Nome do Projeto">
+        </mat-form-field>
+
+        <!-- Observações -->
+        <div *ngIf="!isEditing">
+            <strong>Descrições:</strong> {{ projetoForm.get('descricao')?.value }}<br>
+            <button class="btnEdit" mat-button (click)="toggleEdit('descricao')">Editar</button>
+        </div>
+        <mat-form-field class="input" *ngIf="isEditing === 'descricao'" appearance="fill">
+            <mat-label>Descrições</mat-label>
+            <textarea matInput formControlName="descricao" placeholder="Detalhes sobre o projeto"></textarea>
+        </mat-form-field>
+
+        <!-- Datas -->
+        <div class="datas">
+            <div *ngIf="!isEditing">
+                <strong>Data de Início:</strong> 
+                <span *ngIf="!projetoForm.get('dataInicio')?.value">Nenhuma data definida</span>
+                <span *ngIf="projetoForm.get('dataInicio')?.value"> {{ projetoForm.get('dataInicio')?.value | date }}</span>
+                <br>
+                <button class="btnEdit" mat-button (click)="toggleEdit('dataInicio')">Editar</button>
+            </div>
+            <mat-form-field *ngIf="isEditing === 'dataInicio'" appearance="fill">
+                <mat-label>Data de Início</mat-label>
+                <input matInput type="date" formControlName="dataInicio">
+            </mat-form-field>
+        </div>
+        
+        <div class="datas">
+            <div *ngIf="!isEditing">
+                <strong>Data de Fim:</strong> 
+                <span *ngIf="!projetoForm.get('dataFim')?.value">Nenhuma data definida</span>
+                <span *ngIf="projetoForm.get('dataFim')?.value"> {{ projetoForm.get('dataFim')?.value | date }}</span>
+                <br>
+                <button class="btnEdit" mat-button (click)="toggleEdit('dataFim')">Editar</button>
+            </div>
+            <mat-form-field *ngIf="isEditing === 'dataFim'" appearance="fill">
+                <mat-label>Data de Fim</mat-label>
+                <input matInput type="date" formControlName="dataFim">
+            </mat-form-field>
+        </div>
+        
+        <mat-error *ngIf="projetoForm.get('dataInicio')?.hasError('startDateInvalid')">
+            A data de início não pode ser anterior à data atual.
+        </mat-error>
+        <mat-error *ngIf="projetoForm.hasError('dateRangeInvalid')">
+            A data de fim não pode ser anterior à data de início.
+        </mat-error>
+        <mat-error *ngIf="projetoForm.get('dataFim')?.hasError('endDateInvalid')">
+            A data de fim não pode ser anterior à data atual.
+        </mat-error>
+    </form>
+    <br>
+    <div mat-dialog-actions style="padding: 0px;">
+        <button mat-button class="btn-padrao" (click)="closeDialog()">Cancelar</button>
+        <button mat-button class="btn-padrao" type="submit" (click)="arquivarProjeto()">Arquivar projeto</button>
+        <button mat-button class="btn-padrao" type="submit" (click)="salvarProjeto()">Salvar</button>
+    </div>
+
+</div>

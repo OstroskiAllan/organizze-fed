@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Tarefa } from 'src/app/models/tarefa.model';
 import { TaskService } from '../../task/task.service';
+import { ModalConfirmacaoComponent } from 'src/app/views/template/modal-confirmacao/modal-confirmacao.component';
 
 
 @Component({
@@ -40,13 +41,35 @@ export class TaskboardComponent implements OnInit {
       this.carregarTask();
     });
   }
+  arquivarTask(item: any) {
+    this.openConfirmacaoDialog('Você tem certeza que deseja arquivar a tarefa?')
+      .then(result => {
+        if (result) {
+          console.log('Arquivar tarefa', item);
+          item.statusId = 5;
+          this.taskservice.update(item).subscribe(
+            () => {
+              console.log('Tarefa atualizada com sucesso.');
+            },
+            (error) => {
+              console.error('Erro ao atualizar tarefa:', error);
+            });
+          this.reload();
+          console.log('Ação confirmada pelo usuário', item);
+        } else {
+          console.log('Ação cancelada pelo usuário', item);
+        }
+      });
+
+  }
+
+
 
   carregarTask() {
     this.taskservice.getTarefasProjeto(this.projetoId).subscribe(
       (response) => {
         // Aqui você pode manipular a resposta
         this.response = response
-        console.log('Tarefas carregadas:', response);
         this.distribuirTarefas(response);
 
         response.forEach(tarefa => {
@@ -166,5 +189,15 @@ export class TaskboardComponent implements OnInit {
   toggleDoneList(): void {
     this.isDoneExpanded = !this.isDoneExpanded;
   }
+  reload(): void {
+    window.location.reload();
+  }
+  openConfirmacaoDialog(texto: string): Promise<boolean> {
+    const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
+      width: '450px',
+      data: { texto: texto }
+    });
 
+    return dialogRef.afterClosed().toPromise();
+  }
 }

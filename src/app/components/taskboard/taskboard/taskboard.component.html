@@ -20,7 +20,7 @@
           <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
           <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
         </ng-container>
-        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+        <button mat-button (click)="viewTaskDetails(item)">Ver mais</button>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@
           <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
           <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
         </ng-container>
-        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+        <button mat-button (click)="viewTaskDetails(item)">Ver mais</button>
       </div>
     </div>
   </div>
@@ -50,7 +50,7 @@
           <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
           <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
         </ng-container>
-        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+        <button mat-button (click)="viewTaskDetails(item)">Ver mais</button>
       </div>
     </div>
   </div>
@@ -66,7 +66,11 @@
           <p *ngIf="item.nomeUsuario"><strong>Responsável: </strong> {{item.nomeUsuario}}</p>
           <p *ngIf="item.dataEntrega">Data de Entrega: {{item.dataEntrega | date }} </p>
         </ng-container>
-        <button mat-button (click)="viewTaskDetails(item)">Ver</button>
+        <div style="display: flex; justify-content: space-between;">
+
+          <button mat-button (click)="viewTaskDetails(item)">Ver mais</button>
+          <button mat-button (click)="arquivarTask(item)">Arquivar</button>
+        </div>
       </div>
 
       <button *ngIf="done.length > maxVisibleItems" (click)="toggleDoneList()">

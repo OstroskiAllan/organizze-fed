@@ -19,13 +19,16 @@ export class TeamComponent implements OnInit {
   displayedColumns: string[] = ['nome', 'cargo', 'acoes'];
   cargos: string[] = ['Desenvolvedor', 'Designer', 'Gerente de Projeto']; // Exemplo de lista de cargos
   showAddForm = false;
+  showEditForm = false;
   projetosPart: UsuarioProjeto[] = [];
+  editandoMembro!: any;
   team: UsuarioProjeto[] = [];
   numerodoProj?: number;
   showOtherCargoField = false; // Controla a exibição do campo de novo cargo
   projetoId!: number;
   clickedInput: string | null = null;
   errorMessage!: string;
+  isEditing = false;
 
   constructor(
     public dialog: MatDialog,
@@ -55,47 +58,15 @@ export class TeamComponent implements OnInit {
 
   editarMembro(membro: any) {
     // Lógica para editar o membro
-    this.openConfirmacaoDialog('Você tem certeza que deseja continuar?')
-      .then(result => {
-        if (result) {
-
-          console.log('Ação confirmada pelo usuário' , membro);
-        } else {
-          console.log('Ação cancelada pelo usuário', membro);
-        }
-      });
-    console.log('Editar membro', membro);
-    // Você pode abrir um diálogo ou um formulário para editar o membro
-  }
-
-  removerMembro(membro: any) {
-
-    this.openConfirmacaoDialog('Você tem certeza que deseja continuar?')
-    .then(result => {
-      if (result) {
-        console.log('Ação confirmada pelo usuário' , membro);
-      } else {
-        console.log('Ação cancelada pelo usuário', membro);
-      }
+    this.editandoMembro = membro;
+    this.showEditForm = true;
+    this.equipeForm.patchValue({
+      email: membro.nome,
+      cargo: membro.cargo
     });
-    /*if (confirm('Tem certeza que deseja remover este membro?')) {
-      // Lógica para remover o membro
-      console.log('Remover membro', membro);
-      // Chame o serviço para remover o membro e recarregue os dados
-      this.projetoService.removerParticipante(membro.id).subscribe(
-        response => {
-          console.log('Membro removido com sucesso', response);
-          this.loadData(); // Recarrega os dados do componente
-        },
-        erro => {
-          console.error('Erro ao remover membro', erro);
-        }
-      );
-    } */
   }
-
+  
   carregarTeam(idProjeto: number) {
-    console.log('Carregar---------', idProjeto);
     this.projetoService.getTeamProjetoId(idProjeto).subscribe(
       (team: UsuarioProjeto[]) => {
         // Array de observáveis para obter os nomes dos usuários
@@ -124,9 +95,60 @@ export class TeamComponent implements OnInit {
       }
     );
   }
+  removerMembro(membro: any) {
+    this.openConfirmacaoDialog('Você tem certeza que deseja continuar? A ação só pode ser efetuada se o usuario nao estiver atrelado a nenhuma tarefa e não poderá ser desfeita.')
+    .then(result => {
+      if (result) {
+        // Lógica para remover o membro
+        this.projetoService.removeMembro(1002, 1).subscribe(
+          () => {
+            this.projetoService.showMessage('Membro removido com sucesso!');
+            this.carregarTeam(this.projetoId); // Atualiza a lista após a exclusão
+          },
+          (error) => {
+            this.projetoService.showMessage('Membro atrelado a tarefas, não pode ser removido!');
+          }
+        );
+        console.log('Ação confirmada pelo usuário' , membro);
+      } else {
+        console.log('Ação cancelada pelo usuário', membro);
+      }
+    });
+  }
 
+  salvarEdicaoMembro() {
+    if (!this.editandoMembro) return;
+    const cargo = this.equipeForm.get('cargo')?.value;
+
+    console.log('Teste mesa  -', cargo);
+    console.log('Teste mesa  -', this.projetoId);
+    console.log('Teste mesa  -', this.editandoMembro.usuarioId);
+    this.openConfirmacaoDialog('Tem certeza que deseja editar esse membro?')
+      .then(result => {
+        if (result) {
+          this.projetoService.updateMembro(this.projetoId, this.editandoMembro.usuarioId,  cargo).subscribe(
+            () => {
+              this.projetoService.showMessage('Usuário atualizado com sucesso!');
+              this.cancelarEdicao();
+              this.carregarTeam(this.projetoId);
+            },
+            error => {
+              this.projetoService.showMessage(error);
+              console.error('Erro ao editar usuário', error);
+            }
+          );
+        }
+      });
+  }
+
+  cancelarEdicao() {
+    this.equipeForm.reset();
+    this.showEditForm = false;
+    this.editandoMembro = null;
+  }
+  
   salvarNovoMembro() {
-    this.projetoId = this.data.projetoId;
+    //this.projetoId = this.data.projetoId; // VERIFICAR 
     const email = this.equipeForm.get('email')?.value;
     const cargo = this.equipeForm.get('cargo')?.value;
 
@@ -134,8 +156,7 @@ export class TeamComponent implements OnInit {
     .then(result => {
       if (result) {
         this.projetoService.addParticipante(email, this.projetoId, cargo).subscribe(
-          response => {
-            console.log('Usuário adicionado com sucesso', response);
+          () => {
             this.projetoService.showMessage('Usuário adicionado com sucesso!');
             this.cancelarAdicao();
             this.loadData();
@@ -143,10 +164,8 @@ export class TeamComponent implements OnInit {
           error => {
             this.errorMessage = error;
             this.projetoService.showMessage(error);
-            console.error('Erro ao adicionar usuário ao projeto', error);
           }
         );
-        console.log('Ação confirmada pelo usuário');
       } else {
         console.log('Ação cancelada pelo usuário');
       }
@@ -202,7 +221,7 @@ export class TeamComponent implements OnInit {
 
   openConfirmacaoDialog(texto: string): Promise<boolean> {
     const dialogRef = this.dialog.open(ModalConfirmacaoComponent, {
-      width: '350px',
+      width: '500px',
       data: { texto: texto }
     });
 
