@@ -1,27 +1,48 @@
 <app-header></app-header>
 <div class="container-conteudo">
-<nav-bar class="nav-bar"></nav-bar>
-<div class="content">
+  <nav-bar class="nav-bar"></nav-bar>
+  <div class="content" style="background-color: #eeeeee;">
     <mat-card class="dash mat-elevation-z3">
-
-        <mat-card-title class="title">
-            Arquivo de Projetos e tarefas!
-        </mat-card-title>
-        <mat-card-subtitle class="subtitle">
-            Sistema para teste de Arquivos de trabalhos feitos!
-        </mat-card-subtitle>
-        <br>
-    </mat-card><br>
-    <mat-card class="dash mat-elevation-z3">
-
-        <mat-card-subtitle class="subtitle">
-            Sem projetos arquivados no momento
-        </mat-card-subtitle>
-
-        <button mat-raised-button routerLink="/projects" color="primary">
-            Tela de Projetos
-        </button>
+      <mat-card-title class="title">
+        Arquivo de tarefas!
+      </mat-card-title>
+      <mat-card-subtitle class="subtitle" style="margin-bottom: 0px !important;">
+        Aqui estão as tarefas enviadas para o arquivo e separadas por projeto!
+      </mat-card-subtitle>
+   
+      <br>
+   
+      <div class="arquivo-container">
+    
+        <div *ngIf="projetos.length > 0; else semProjetos">
+            <mat-accordion>
+                <mat-expansion-panel *ngFor="let projeto of projetosComTarefasArquivadas">
+                  <mat-expansion-panel-header style="height: 65px !important;">
+                    <div class="teste">
+                            <mat-panel-title>Projeto: {{ projeto.nome }}</mat-panel-title> 
+                    </div>
+                  </mat-expansion-panel-header>
+                  <div>
+                    <mat-accordion>
+                      <mat-expansion-panel *ngFor="let tarefa of getTarefasArquivadasPorProjeto(projeto.id)">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>{{ tarefa.nome }}</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>Observações: {{ tarefa.observacoes }}</p>
+                        <p>Data de criação: {{tarefa.dataCriacao | date:'dd/MM/yyyy' }}</p>
+                        <p>Data de Entrega: {{ tarefa.dataEntrega | date:'dd/MM/yyyy' }}</p>
+                        <button mat-button (click)="retornarTarefa(tarefa)">Retornar ao projeto</button>
+                        <button mat-button (click)="excluirTarefa(tarefa)">Excluir</button>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+        </div>
+        <ng-template #semProjetos>
+          <p>Nenhum projeto encontrado.</p>
+        </ng-template>
+      </div>
     </mat-card>
-
-</div>
+  </div>
 </div>

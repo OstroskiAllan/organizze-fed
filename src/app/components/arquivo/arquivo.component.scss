@@ -1,14 +1,65 @@
-.title{
-    margin: 15px 15px 0;
+.title {
+  margin: 15px 15px 0;
 }
 
-.subtitle{
-    margin: 15px 15px 0;
-}
-  
-button{
-    width: 20%;
-    margin: 15px 15px ;
-    background-color:  #537cf7 !important;
+.subtitle {
+  margin: 15px 15px 0;
 }
 
+button {
+  margin: 15px 15px 15px 0px;
+  background-color: #537cf7 !important;
+  color: white !important;
+}
+
+.arquivo-container {
+  padding: 20px;
+}
+
+h1 {
+  color: #3f51b5;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h2 {
+  color: #3f51b5;
+  margin-top: 20px;
+}
+
+.projeto-card {
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.tarefa-item {
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+}
+
+.tarefa-item:last-child {
+  border-bottom: none;
+}
+
+p {
+  color: #555;
+  margin: 5px 0;
+}
+
+mat-expansion-panel {
+  margin-bottom: 10px;
+}
+
+mat-panel-title {
+}
+
+mat-panel-description {
+  color: #777;
+}
+
+
+.teste{
+  display: flex none !important;
+}

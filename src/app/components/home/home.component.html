@@ -1,29 +1,63 @@
 <app-header></app-header>
-<div class="content">
+<div class="container-conteudo">
+  <nav-bar class="nav-bar"></nav-bar>
+  <div class="content">
+    <mat-card class="dashboard-container mat-elevation-z3" style="margin-bottom: 15px;">
+      <mat-card-title>
+        Bem-vindo, {{ usuario.nome }}!
+      </mat-card-title><br>
+      <mat-card-subtitle>
+        Aqui está um resumo do seu trabalho atual:
+      </mat-card-subtitle><br>
+    </mat-card>
+    <div style="display: flex; justify-content: space-between; ">
+      <div class="dashboard-container mat-elevation-z3" style="margin-bottom: 15px;     width: 18%;">
+        <section class="estatisticas ">
+          <h2>Estatísticas Gerais</h2>
+          <p>Total de Projetos: {{ projetos.length }}</p>
+          <p>Minhas tarefas: {{ quantidadeTarefasUsuario }}</p>
+        </section>
+      </div>
+      <section class="dashboard-container sprojetos-proximos mat-elevation-z3" style="margin-bottom: 15px; width: 80%;">
+        <h2>
+          Projetos
 
-    <h1>Página Home de Teste</h1>
+        </h2>
+        <mat-card-subtitle>
+          Próximas entregas:
+        </mat-card-subtitle><br>
+        <div *ngIf="projetosProximosDoFim.length > 0; else noProjetos">
+          <table mat-table [dataSource]="projetosProximosDoFim" class="mat-elevation-z3" style="border-radius: 5px;">
+            <ng-container matColumnDef="nome">
+              <th mat-header-cell *matHeaderCellDef>Nome</th>
+              <td mat-cell *matCellDef="let projeto">{{projeto.nome}}</td>
+            </ng-container>
 
-    <p>
-        Este é um parágrafo de teste para a página de exemplo. Aqui você pode adicionar o conteúdo que deseja testar,
-        seja texto, informações ou qualquer outro tipo de conteúdo que deseje exibir. Este é um exemplo simples de como
-        você pode estruturar uma página com títulos e parágrafos.
-    </p>
+            <ng-container matColumnDef="descricao">
+              <th mat-header-cell *matHeaderCellDef>Descrição</th>
+              <td mat-cell *matCellDef="let projeto">{{projeto.descricao}}</td>
+            </ng-container>
 
-    <p class="highlight">
-        Este é um parágrafo destacado com um fundo colorido e uma borda à esquerda. Você pode usar esse estilo para
-        destacar informações importantes ou criar seções distintas em sua página.
-    </p>
+            <ng-container matColumnDef="dataFim">
+              <th mat-header-cell *matHeaderCellDef>Data de Fim</th>
+              <td mat-cell *matCellDef="let projeto">{{projeto.dataFim | date}}</td>
+            </ng-container>
 
-    <p>
-        Continue adicionando mais parágrafos conforme necessário. Você pode ajustar o estilo e o layout de acordo com
-        suas necessidades específicas. Lembre-se de que um bom design deve ser claro e fácil de ler.
-    </p>
+            <tr mat-header-row *matHeaderRowDef="['nome', 'descricao', 'dataFim']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['nome', 'descricao', 'dataFim'];"
+              (dblclick)="abrirDetalhes(row.id)"></tr>
+          </table>
+          <p style="color: #575454;
+          padding-left: 75%;
+          font-size: 13px;">Obs: Clique duas vezes no projeto para abrir.</p>
+          <!-- <button mat-raised-button color="primary" routerLink="/projects">Projetos</button> -->
+        </div>
 
-    <p class="highlight">
-        Adicionar mais conteúdo aqui pode ajudar a testar diferentes elementos e garantir que sua página se comporte
-        como esperado em diferentes tamanhos de tela e dispositivos. Testar o layout e o estilo com vários tipos de
-        conteúdo é uma boa prática.
-    </p>
-
+        <ng-template #noProjetos>
+          <p>Nenhum projeto próximo do fim. </p><br> <button mat-raised-button color="primary"
+            routerLink="/projects">Criar um projeto</button>
+        </ng-template>
+      </section>
+    </div>
+  </div>
 </div>
-<nav-bar></nav-bar>
