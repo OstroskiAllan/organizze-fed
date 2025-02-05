@@ -64,7 +64,12 @@ export class TeamDelegateComponent implements OnInit {
         forkJoin(requests).subscribe(
           (result: UsuarioProjeto[]) => {
             // Atualiza a equipe com os nomes dos usuários
-            this.team = result;
+            this.team = result.sort((a, b) => {
+              if (a.nome && b.nome) {
+                return a.nome.localeCompare(b.nome);
+              }
+              return 0;
+            })  
           },
           (erro) => {
             console.error('Erro ao buscar detalhes dos projetos', erro);

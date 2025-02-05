@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { Projeto } from 'src/app/models/projeto.model';
 import { UsuarioProjeto } from 'src/app/models/usuarioprojeto.model';
 
@@ -78,6 +78,16 @@ export class ProjectService {
     const url = `${this.apiUrl}/${id}`;
     
     return this.http.delete<Projeto>(url, { headers });
+  }
+
+  getUserIdByEmail(email: string): Observable<number | null> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+    const url = `${this.apiUrl}/email/${email}`;
+    
+    return this.http.get<number>(url, { headers }).pipe(
+      catchError(() => of(null)) // Retorna `null` em caso de erro
+    );
   }
 
   removeMembro( usuarioId: number, projetoid: number): Observable<UsuarioProjeto> {

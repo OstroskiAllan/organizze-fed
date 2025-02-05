@@ -22,8 +22,8 @@
         <ng-container matColumnDef="acoes">
           <mat-header-cell *matHeaderCellDef>    Ações </mat-header-cell>
           <mat-cell *matCellDef="let membro">
-            <button mat-button><a  (click)="editarMembro(membro)"><i class="material-icons v-middle" style="color: #537cf7;">edit</i></a></button>
-            <button mat-button (click)="removerMembro(membro)"><a><i class="material-icons v-middle" style="color: #537cf7;">delete</i></a></button>
+            <button mat-button *ngIf="membro.cargo !== 'Gerente'"><a (click)="editarMembro(membro)"><i class="material-icons v-middle" style="color: #537cf7;">edit</i></a></button>
+            <button mat-button *ngIf="membro.cargo !== 'Gerente'" (click)="removerMembro(membro)"><a><i class="material-icons v-middle" style="color: #537cf7;">delete</i></a></button>
           </mat-cell>
         </ng-container>
 
@@ -53,16 +53,7 @@
             <ng-container *ngIf="clickedInput === 'input1'">
               <mat-form-field class="input">
                 <mat-label>Cargo</mat-label>
-                <mat-select formControlName="cargo" (selectionChange)="onCargoChange($event)">
-                  <mat-option *ngFor="let cargo of cargos" [value]="cargo">{{ cargo }}</mat-option>
-                  <mat-option value="Outro">Outro</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <!-- Campo para o novo cargo, exibido apenas se 'Outro' for selecionado -->
-              <mat-form-field *ngIf="showOtherCargoField" class="input">
-                <mat-label>Digite o novo cargo</mat-label>
-                <input matInput formControlName="otherCargo" placeholder="Novo Cargo">
+                <input matInput formControlName="cargo" placeholder="Digite o cargo">
               </mat-form-field>
             </ng-container>
             
@@ -73,6 +64,35 @@
           </form>
         </mat-card-content>
       </div>
+
+
+
+      <div *ngIf="showEditForm">
+        <mat-card-content class="cardForm">
+          <mat-card-title>
+            Editar Membro:
+          </mat-card-title>
+          <form [formGroup]="equipeForm">
+            <mat-form-field class="input" appearance="fill">
+              <mat-label>Email Colaborador</mat-label>
+              <input matInput formControlName="email" placeholder="Email Colaborador" id="input1">
+            </mat-form-field>
+      
+            <mat-form-field class="input" appearance="fill">
+              <mat-label>Cargo</mat-label>
+              <input matInput formControlName="cargo" placeholder="Cargo" id="input2">
+            </mat-form-field>
+      
+            <mat-card-actions class="buttons-new-member">
+              <button mat-button class="btn-padrao buttonn" (click)="cancelarEdicao()">Cancelar</button>
+              <button mat-button class="btn-padrao buttonn" (click)="salvarEdicaoMembro()" [disabled]="equipeForm.invalid">Salvar</button>
+            </mat-card-actions>
+          </form>
+        </mat-card-content>
+      </div>
+
+      
+      
     </mat-card-content>
 
     <mat-card-actions class="button">

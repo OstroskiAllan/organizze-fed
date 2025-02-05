@@ -17,7 +17,7 @@ export class TeamComponent implements OnInit {
   equipeForm!: FormGroup;
   projeto!: Projeto;
   displayedColumns: string[] = ['nome', 'cargo', 'acoes'];
-  cargos: string[] = ['Desenvolvedor', 'Designer', 'Gerente de Projeto']; // Exemplo de lista de cargos
+  cargos: string[] = []; // Exemplo de lista de cargos
   showAddForm = false;
   showEditForm = false;
   projetosPart: UsuarioProjeto[] = [];
@@ -64,8 +64,9 @@ export class TeamComponent implements OnInit {
       email: membro.nome,
       cargo: membro.cargo
     });
+    this.equipeForm.get('email')?.disable();
   }
-  
+
   carregarTeam(idProjeto: number) {
     this.projetoService.getTeamProjetoId(idProjeto).subscribe(
       (team: UsuarioProjeto[]) => {
@@ -82,8 +83,18 @@ export class TeamComponent implements OnInit {
         // Executa todas as requisições e aguarda a conclusão
         forkJoin(requests).subscribe(
           (result: UsuarioProjeto[]) => {
-            // Atualiza a equipe com os nomes dos usuários
-            this.team = result;
+            const gerente = result.find(member => member.cargo === 'Gerente');
+            const outrosMembros = result.filter(member => member.cargo !== 'Gerente');
+
+            this.team = [
+              ...(gerente ? [gerente] : []),
+              ...outrosMembros.sort((a, b) => {
+                if (a.nome && b.nome) {
+                  return a.nome.localeCompare(b.nome);
+                }
+                return 0;
+              })
+            ];
           },
           (erro) => {
             console.error('Erro ao buscar detalhes dos projetos', erro);
@@ -97,40 +108,38 @@ export class TeamComponent implements OnInit {
   }
   removerMembro(membro: any) {
     this.openConfirmacaoDialog('Você tem certeza que deseja continuar? A ação só pode ser efetuada se o usuario nao estiver atrelado a nenhuma tarefa e não poderá ser desfeita.')
-    .then(result => {
-      if (result) {
-        // Lógica para remover o membro
-        this.projetoService.removeMembro(1002, 1).subscribe(
-          () => {
-            this.projetoService.showMessage('Membro removido com sucesso!');
-            this.carregarTeam(this.projetoId); // Atualiza a lista após a exclusão
-          },
-          (error) => {
-            this.projetoService.showMessage('Membro atrelado a tarefas, não pode ser removido!');
-          }
-        );
-        console.log('Ação confirmada pelo usuário' , membro);
-      } else {
-        console.log('Ação cancelada pelo usuário', membro);
-      }
-    });
+      .then(result => {
+        if (result) {
+          // Lógica para remover o membro
+          this.projetoService.removeMembro(membro.usuarioId, membro.projetoId).subscribe(
+            () => {
+              this.projetoService.showMessage('Membro removido com sucesso!');
+              this.carregarTeam(this.projetoId); // Atualiza a lista após a exclusão
+            },
+            (error) => {
+              this.projetoService.showMessage('Membro atrelado a tarefas, não pode ser removido!');
+            }
+          );
+          console.log('Ação confirmada pelo usuário', membro);
+        } else {
+          console.log('Ação cancelada pelo usuário', membro);
+        }
+      });
   }
 
   salvarEdicaoMembro() {
     if (!this.editandoMembro) return;
     const cargo = this.equipeForm.get('cargo')?.value;
 
-    console.log('Teste mesa  -', cargo);
-    console.log('Teste mesa  -', this.projetoId);
-    console.log('Teste mesa  -', this.editandoMembro.usuarioId);
     this.openConfirmacaoDialog('Tem certeza que deseja editar esse membro?')
       .then(result => {
         if (result) {
-          this.projetoService.updateMembro(this.projetoId, this.editandoMembro.usuarioId,  cargo).subscribe(
+          this.projetoService.updateMembro(this.projetoId, this.editandoMembro.usuarioId, cargo).subscribe(
             () => {
               this.projetoService.showMessage('Usuário atualizado com sucesso!');
               this.cancelarEdicao();
               this.carregarTeam(this.projetoId);
+              this.equipeForm.get('email')?.enable();
             },
             error => {
               this.projetoService.showMessage(error);
@@ -146,32 +155,50 @@ export class TeamComponent implements OnInit {
     this.showEditForm = false;
     this.editandoMembro = null;
   }
-  
+
   salvarNovoMembro() {
-    //this.projetoId = this.data.projetoId; // VERIFICAR 
     const email = this.equipeForm.get('email')?.value;
     const cargo = this.equipeForm.get('cargo')?.value;
-
-    this.openConfirmacaoDialog('Tem certeza que deseja adicionar essa pessoa ao projeto?')
-    .then(result => {
-      if (result) {
-        this.projetoService.addParticipante(email, this.projetoId, cargo).subscribe(
-          () => {
-            this.projetoService.showMessage('Usuário adicionado com sucesso!');
-            this.cancelarAdicao();
-            this.loadData();
-          },
-          error => {
-            this.errorMessage = error;
-            this.projetoService.showMessage(error);
-          }
-        );
-      } else {
-        console.log('Ação cancelada pelo usuário');
+  
+    this.projetoService.getUserIdByEmail(email).subscribe(userId => {
+      if (userId === null) {
+        this.projetoService.showMessage('Usuário não encontrado.');
+        return;
       }
+  
+      // Verifica se o usuário já está no time
+      const usuarioJaNoTime = this.team.some(member => member.usuarioId === userId);
+  
+      if (usuarioJaNoTime) {
+        this.projetoService.showMessage('Usuário já faz parte da equipe.');
+        return;
+      }
+  
+      this.openConfirmacaoDialog('Tem certeza que deseja adicionar essa pessoa ao projeto?')
+        .then(result => {
+          if (result) {
+            this.projetoService.addParticipante(email, this.projetoId, cargo).subscribe(
+              () => {
+                this.projetoService.showMessage('Usuário adicionado com sucesso!');
+                this.cancelarAdicao();
+                this.loadData();
+              },
+              error => {
+                this.errorMessage = error;
+                this.projetoService.showMessage(error);
+              }
+            );
+          } else {
+            console.log('Ação cancelada pelo usuário');
+          }
+        });
+  
+    }, error => {
+      this.projetoService.showMessage('Erro ao buscar usuário.');
     });
   }
-
+  
+  
   loadData(): void {
     // Adicione aqui a lógica para carregar os dados necessários para o componente
     this.equipeForm = this.formBuilder.group({
@@ -192,17 +219,9 @@ export class TeamComponent implements OnInit {
     );
   }
 
-  onCargoChange(event: any) {
-    if (event.value === 'Outro') {
-      this.showOtherCargoField = true; // Exibe o campo de novo cargo
-    } else {
-      this.showOtherCargoField = false;
-      this.equipeForm.get('otherCargo')?.reset(); // Reseta o campo caso "Outro" não seja selecionado
-    }
-  }
-
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
+    this.equipeForm.get('email')?.enable();
   }
 
 
