@@ -39,7 +39,7 @@
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (dblclick)="abrirDetalhes(row.id)"></tr>
                 </table>
-                
+               
                 <mat-paginator #paginatorProjetos
                     [pageSize]="6"
                     [pageSizeOptions]="[3, 5, 7]"
@@ -48,12 +48,14 @@
                     aria-label="Selecione a página">
                 </mat-paginator>
             </div>
+            <p style="color: #575454;
+        padding-left: 80%;
+        font-size: 13px;">Obs: Clique duas vezes no projeto para abrir.</p>
         </mat-card>
+        <div class="mat-elevation-x3">
     </div>
 
     <br>
-
-    <div class="mat-elevation-x3">
         <mat-card>
             <mat-card class="dash">
                 <mat-card-title class="title">
@@ -97,6 +99,9 @@
                     [pageSizeOptions]="[3, 5, 7]">
                 </mat-paginator>
             </div>
+            <p style="color: #575454;
+        padding-left: 80%;
+        font-size: 13px;">Obs: Clique duas vezes no projeto para abrir.</p>
         </mat-card>
     </div>
 </div>

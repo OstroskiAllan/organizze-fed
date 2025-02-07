@@ -107,7 +107,7 @@ export class TeamComponent implements OnInit {
     );
   }
   removerMembro(membro: any) {
-    this.openConfirmacaoDialog('Você tem certeza que deseja continuar? A ação só pode ser efetuada se o usuario nao estiver atrelado a nenhuma tarefa e não poderá ser desfeita.')
+    this.openConfirmacaoDialog('Você tem certeza que deseja continuar? A ação só pode ser efetuada se o usuário nao estiver atrelado a nenhuma tarefa e não poderá ser desfeita.')
       .then(result => {
         if (result) {
           // Lógica para remover o membro

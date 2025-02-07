@@ -22,8 +22,8 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
       nome: ['', Validators.required],         // TIREI SOMENTE PARA TESTE MAIS AGEIS!
-      email: ['', [Validators.required]],     // , Validators.email adicionar isso para validar o email
-      password: ['', [Validators.required]], // ,Validators.minLength(6) adicionar isso para validar a senha
+      email: ['', [Validators.required, Validators.email]],     // , Validators.email adicionar isso para validar o email
+      password: ['', [Validators.required, Validators.minLength(6)]], // ,Validators.minLength(6) adicionar isso para validar a senha
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
   }

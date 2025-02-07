@@ -22,8 +22,8 @@ export class LoginComponent {
   ngOnInit(): void {
     //this.authService.removeToken();
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required]], // Validators.email adicionar isso para validar O EMAIL
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]], // Validators.email adicionar isso para validar O EMAIL
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 

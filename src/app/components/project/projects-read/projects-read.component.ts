@@ -23,18 +23,18 @@ export class ProjectsReadComponent implements OnInit, AfterViewInit {
 
   displayedColumns: string[] = ['nome', 'descricao', 'data_inicio', 'data_fim'];
   projectColumns: string[] = ['nome', 'descricao', 'cargo'];
-  
+
   dataSourceProjetos: MatTableDataSource<any>;
   dataSourceParticipacao: MatTableDataSource<UsuarioProjeto>;
-  
+
   totalItems!: number;
   totalIPart!: number;
   totalItemsPart!: boolean;
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private projectService: ProjectService,
-    private router: Router, 
+    private router: Router,
     public dialog: MatDialog
   ) {
     this.dataSourceProjetos = new MatTableDataSource<any>([]);
@@ -43,76 +43,86 @@ export class ProjectsReadComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.carregarProjetos();
-    this.carregarProjetosPart(1);
-  }
+    
+    let user = this.getUser();
+    if (user) {
+      let userId = user.id;
+      this.carregarProjetosPart(userId);
+    }
+    }
 
-  ngAfterViewInit(): void {
-    this.dataSourceProjetos.paginator = this.paginatorProjetos;
-    this.dataSourceProjetos.sort = this.sort;
-    this.dataSourceParticipacao.paginator = this.paginatorParticipacao;
-  }
+    ngAfterViewInit(): void {
+      this.dataSourceProjetos.paginator = this.paginatorProjetos;
+      this.dataSourceProjetos.sort = this.sort;
+      this.dataSourceParticipacao.paginator = this.paginatorParticipacao;
+    }
 
-  carregarProjetos() {
-    this.projectService.getProjetos().subscribe(
-      (projetos) => {
-        this.dataSourceProjetos.data = projetos;
-        this.totalItems = projetos.length;
-      },
-      (erro) => {
-        console.error('Erro ao buscar projetos', erro);
-      }
-    );
-  }
+    carregarProjetos() {
+      this.projectService.getProjetos().subscribe(
+        (projetos) => {
+          this.dataSourceProjetos.data = projetos;
+          this.totalItems = projetos.length;
+        },
+        (erro) => {
+          console.error('Erro ao buscar projetos', erro);
+        }
+      );
+    }
 
-  carregarProjetosPart(idUser: number) {
-    this.projectService.getProjetoPart(idUser).subscribe(
-      (projetosPart: UsuarioProjeto[]) => {
-        const requests = projetosPart.map(projetoPart =>
-          this.projectService.getProjetoById(projetoPart.projetoId).pipe(
-            map(projeto => {
-              projetoPart.projeto = projeto;
-              return projetoPart;
-            })
-          )
-        );
+    carregarProjetosPart(idUser: number) {
+      this.projectService.getProjetoPart(idUser).subscribe(
+        (projetosPart: UsuarioProjeto[]) => {
+          const requests = projetosPart.map(projetoPart =>
+            this.projectService.getProjetoById(projetoPart.projetoId).pipe(
+              map(projeto => {
+                projetoPart.projeto = projeto;
+                return projetoPart;
+              })
+            )
+          );
 
-        forkJoin(requests).subscribe(
-          (result: UsuarioProjeto[]) => {
-            this.dataSourceParticipacao.data = result;
-            this.totalItemsPart = result.length > 0;
-            this.totalIPart = result.length;
-          },
-          (erro) => {
-            console.error('Erro ao buscar detalhes dos projetos', erro);
-          }
-        );
-      }
-    );
-  }
-  abrirDialogoConfirmacao(projetoId: number): void {
-    const dialogRef = this.dialog.open(ModalConfirmacaoComponent);
+          forkJoin(requests).subscribe(
+            (result: UsuarioProjeto[]) => {
+              this.dataSourceParticipacao.data = result;
+              this.totalItemsPart = result.length > 0;
+              this.totalIPart = result.length;
+              console.log('Teste dos part', this.totalIPart)
+            },
+            (erro) => {
+              console.error('Erro ao buscar detalhes dos projetos', erro);
+            }
+          );
+        }
+      );
+    }
+    abrirDialogoConfirmacao(projetoId: number): void {
+      const dialogRef = this.dialog.open(ModalConfirmacaoComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.deleteProjeto(projetoId);
-      }
-    });
-  }
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.deleteProjeto(projetoId);
+        }
+      });
+    }
 
-  deleteProjeto(projetoId: number): void {
-    this.projectService.deleteProjeto(projetoId).subscribe(() => {
-      this.projectService.showMessage('Projeto excluído com sucesso!');
-      this.carregarProjetos();
-    }, (error) => {
-      this.projectService.showMessage('Erro ao excluir projeto ' + projetoId);
-    });
-  }
+    deleteProjeto(projetoId: number): void {
+      this.projectService.deleteProjeto(projetoId).subscribe(() => {
+        this.projectService.showMessage('Projeto excluído com sucesso!');
+        this.carregarProjetos();
+      }, (error) => {
+        this.projectService.showMessage('Erro ao excluir projeto ' + projetoId);
+      });
+    }
 
-  abrirDetalhes(projetoId: number): void {
-    this.router.navigate(['/project/', projetoId]);
-  }
+    abrirDetalhes(projetoId: number): void {
+      this.router.navigate(['/project/', projetoId]);
+    }
 
-  editarProjeto(projetoId: number): void {
-    // Implemente a lógica para abrir o projeto, por exemplo, navegar para uma rota específica
+    editarProjeto(projetoId: number): void {
+      // Implemente a lógica para abrir o projeto, por exemplo, navegar para uma rota específica
+    }
+    getUser(): any {
+      let user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
+    }
   }
-}

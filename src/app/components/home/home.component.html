@@ -14,8 +14,9 @@
       <div class="dashboard-container mat-elevation-z3" style="margin-bottom: 15px;     width: 18%;">
         <section class="estatisticas ">
           <h2>Estatísticas Gerais</h2>
-          <p>Total de Projetos: {{ projetos.length }}</p>
-          <p>Minhas tarefas: {{ quantidadeTarefasUsuario }}</p>
+          <p>Meus Projetos: {{ projetos.length }}</p>
+          <p>Projetos que participo: {{ totalIPart }}</p>
+          <p>Total de Projetos: {{ projetos.length + totalIPart}}</p>
         </section>
       </div>
       <section class="dashboard-container sprojetos-proximos mat-elevation-z3" style="margin-bottom: 15px; width: 80%;">
