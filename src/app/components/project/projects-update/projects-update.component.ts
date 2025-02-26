@@ -65,11 +65,14 @@ export class ProjectsUpdateComponent implements OnInit {
 
   salvarProjeto(): void {
     if (this.projetoForm.valid) {
+      const dataInicioValue = this.semDataInicio ? null : this.converterParaTimestamp(this.projetoForm.get('dataInicio')!.value);
+      const dataFimValue = this.semDataFim ? null : this.converterParaTimestamp(this.projetoForm.get('dataFim')!.value);
+  
       const projeto: Projeto = {
         nome: this.projetoForm.get('nome')!.value,
         descricao: this.projetoForm.get('descricao')!.value,
-        dataInicio: this.semDataInicio ? null : this.projetoForm.get('dataInicio')!.value,
-        dataFim: this.semDataFim ? null : this.projetoForm.get('dataFim')!.value
+        dataInicio: dataInicioValue,
+        dataFim: dataFimValue
       };
       
       console.log('salvarProjeto', this.data.projetoId);
@@ -128,5 +131,14 @@ export class ProjectsUpdateComponent implements OnInit {
   metlog(){
     console.log('metlog ----');
   }
+
+  converterParaTimestamp(dataString: string | null): number | null {
+    if (!dataString) return null;
+  
+    const [ano, mes, dia] = dataString.split('-').map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    return data.getTime(); // Retorna o timestamp em milissegundos
+  }
+
 }
 

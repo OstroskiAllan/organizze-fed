@@ -1,14 +1,47 @@
-.title{
-    margin: 15px 15px 0;
+.title {
+  margin: 15px 15px 0;
 }
 
-.subtitle{
-    margin: 15px 15px 0;
-}
-  
-button{
-    width: 20%;
-    margin: 15px 15px ;
-    background-color:  #537cf7 !important;
+.subtitle {
+  margin: 15px 15px 0;
 }
 
+button {
+  margin: 10px 10px 10px 0;
+  background-color: #537cf7 !important;
+  color: #ffffff !important;
+}
+
+.agenda-container {
+  padding: 20px;
+}
+
+h2 {
+  color: #3f51b5;
+  margin-bottom: 15px;
+}
+
+mat-expansion-panel {
+  margin-bottom: 10px;
+}
+
+mat-panel-title {
+}
+
+mat-panel-description {
+  color: #777;
+  font-size: 0.9em;
+}
+
+p {
+  color: #555;
+  margin: 5px 0;
+}
+
+mat-expansion-panel-header {
+  background-color: #f9f9f9 !important;
+}
+
+mat-expansion-panel-header:hover {
+  background-color: #f1f1f1 !important;
+}

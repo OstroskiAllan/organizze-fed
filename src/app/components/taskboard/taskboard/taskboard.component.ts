@@ -47,14 +47,16 @@ export class TaskboardComponent implements OnInit {
         if (result) {
           console.log('Arquivar tarefa', item);
           item.statusId = 5;
+          item.usuarioId = null;
           this.taskservice.update(item).subscribe(
             () => {
               console.log('Tarefa atualizada com sucesso.');
+              this.reload();
             },
             (error) => {
               console.error('Erro ao atualizar tarefa:', error);
             });
-          this.reload();
+          // this.reload();
           console.log('Ação confirmada pelo usuário', item);
         } else {
           console.log('Ação cancelada pelo usuário', item);

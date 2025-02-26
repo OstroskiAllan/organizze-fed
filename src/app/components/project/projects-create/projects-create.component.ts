@@ -68,13 +68,16 @@ export class ProjectsCreateComponent implements OnInit {
 
   salvarProjeto(): void {
     if (this.novoProjetoForm.valid) {
+      const dataInicioValue = this.semDataInicio ? null : this.converterParaTimestamp(this.novoProjetoForm.get('dataInicio')!.value);
+      const dataFimValue = this.semDataFim ? null : this.converterParaTimestamp(this.novoProjetoForm.get('dataFim')!.value);
+  
       const novoProjeto: Projeto = {
         nome: this.novoProjetoForm.get('nome')!.value,
         descricao: this.novoProjetoForm.get('descricao')!.value,
-        dataInicio: this.semDataInicio ? null : this.novoProjetoForm.get('dataInicio')!.value,
-        dataFim: this.semDataFim ? null : this.novoProjetoForm.get('dataFim')!.value
+        dataInicio: dataInicioValue,
+        dataFim: dataFimValue
       };
-
+  
       this.projectService.create(novoProjeto).subscribe(
         data => {
           this.projectService.showMessage("Projeto cadastrado com sucesso!");
@@ -87,7 +90,14 @@ export class ProjectsCreateComponent implements OnInit {
       );
     }
   }
-
+  converterParaTimestamp(dataString: string | null): number | null {
+    if (!dataString) return null;
+  
+    const [ano, mes, dia] = dataString.split('-').map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    return data.getTime(); // Retorna o timestamp em milissegundos
+  }
+    
   reload(): void {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['projects']);

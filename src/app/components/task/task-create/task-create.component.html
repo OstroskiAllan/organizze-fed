@@ -8,8 +8,7 @@
 
         <mat-form-field class="input" appearance="fill">
             <mat-label>Observações</mat-label>
-            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre o Tarefa"
-                name="observacoes"></textarea>
+            <textarea matInput formControlName="observacoes" placeholder="Detalhes sobre a Tarefa"></textarea>
         </mat-form-field>
 
         <div class="datas">
@@ -17,9 +16,8 @@
                 Data atual
             </mat-checkbox>
             <mat-form-field *ngIf="!semDataInicio">
-                <label for="dataInicio">Data Início: </label>
-                <input type="date" matInput formControlName="dataCriacao" placeholder="Data de Início"
-                    name="dataCriacao">
+                <mat-label>Data Início</mat-label>
+                <input type="date" matInput formControlName="dataCriacao">
             </mat-form-field>
         </div>
 
@@ -28,29 +26,25 @@
                 Sem data de entrega
             </mat-checkbox>
             <mat-form-field *ngIf="!semDataEntrega">
-                <label for="dataEntrega">Data Entrega: </label>
-                <input type="date" matInput formControlName="dataEntrega" placeholder="Data entrega" name="dataEntrega">
+                <mat-label>Data Entrega</mat-label>
+                <input type="date" matInput formControlName="dataEntrega">
             </mat-form-field>
         </div>
-        <mat-error *ngIf="novaTarefaForm.get('dataInicio')?.hasError('startDateInvalid')">
-            A data de início não pode ser anterior à data atual.
-        </mat-error>
+
         <mat-error *ngIf="novaTarefaForm.hasError('dateRangeInvalid')">
             A data de entrega não pode ser anterior à data de início.
         </mat-error>
-        <mat-error *ngIf="novaTarefaForm.get('dataEntrega')?.hasError('endDateInvalid')">
-            A data de entrega não pode ser anterior à data atual.
+        <mat-error *ngIf="novaTarefaForm.hasError('endDateInvalid')">
+            A data de entrega não pode ser maior que a data atual.
         </mat-error>
 
         <br>
         <div>
-            <team-delegate 
-                [numberProjeto]="idDoProjeto" 
-                (usuarioSelecionado)="onUsuarioSelecionado($event)">
+            <team-delegate [numberProjeto]="idDoProjeto" (usuarioSelecionado)="onUsuarioSelecionado($event)">
             </team-delegate>
         </div>
     </form>
-    <div mat-dialog-actions style="padding: 0px;">
+    <div mat-dialog-actions>
         <button mat-button class="btn-padrao" (click)="closeDialog()">Cancelar</button>
         <button mat-button class="btn-padrao" type="submit" (click)="salvarTarefa()" [disabled]="novaTarefaForm.invalid">Salvar</button>
     </div>

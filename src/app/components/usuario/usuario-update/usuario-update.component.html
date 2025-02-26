@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>Editar Usuário</h2>
+<div mat-dialog-content>
+  <form [formGroup]="userForm">
+
+    <!-- Campo Nome -->
+    <div *ngIf="!isEditing || isEditing !== 'nome'" class="info-display">
+      <strong>Nome: </strong> {{ userForm.get('nome')?.value }} <br>
+      <button class="btnEdit" mat-button (click)="toggleEdit('nome')">
+        Editar
+      </button>
+    </div>
+    <mat-form-field *ngIf="isEditing === 'nome'" appearance="fill">
+      <mat-label>Nome: </mat-label>
+      <input matInput formControlName="nome" placeholder="Nome do Usuário">
+    </mat-form-field>
+
+    <!-- Campo Email -->
+    <div *ngIf="!isEditing || isEditing !== 'email'" class="info-display">
+      <strong>Email: </strong> {{ userForm.get('email')?.value }} <br>
+      <button class="btnEdit" mat-button (click)="toggleEdit('email')">
+        Editar
+      </button>
+    </div>
+    <mat-form-field *ngIf="isEditing === 'email'" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Email de Usuário">
+    </mat-form-field>
+
+    <!-- Campo Senha -->
+    <div *ngIf="!isEditing || isEditing !== 'senha'" class="info-display">
+      <strong>Senha: </strong> ******** <br>
+      <button class="btnEdit" mat-button (click)="toggleEdit('senha')">
+        Editar
+      </button>
+    </div>
+
+    <div *ngIf="isEditing === 'senha'">
+      <mat-form-field appearance="fill">
+        <mat-label>Senha Atual</mat-label>
+        <input matInput type="password" formControlName="senhaAtual" placeholder="Digite sua senha atual">
+      </mat-form-field>
+      <br>
+      <button mat-button class="btn-padrao" (click)="verificarSenhaAtual()" style="margin-bottom: 20px;">Verificar</button>
+
+      <div *ngIf="senhaVerificada">
+        <mat-form-field appearance="fill">
+          <mat-label>Nova Senha</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="Digite a nova senha"
+            [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+          <mat-label>Confirme a Nova Senha</mat-label>
+          <input matInput formControlName="confirmPassword" type="password" placeholder="Confirme a senha"
+            [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide">
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="userForm.hasError('passwordMismatch')">
+            As senhas não coincidem
+          </mat-error>
+          <mat-error *ngIf="userForm.hasError('passwordSameAsOld')">
+            A nova senha não pode ser igual à senha atual
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Botões de ação -->
+<div mat-dialog-actions>
+  <button mat-button (click)="cancelEdit()">Cancelar</button>
+  <button mat-button class="btn-padrao" type="submit" (click)="atualizarUsuario()">
+    Salvar
+  </button>
+</div>

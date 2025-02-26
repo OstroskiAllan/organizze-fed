@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ForgotPasswordComponent } from './components/auth/forgot-password/forgot-password.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HomeComponent } from './components/home/home.component';
-
+import { MatExpansionModule } from '@angular/material/expansion'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -52,6 +52,10 @@ import { UsuarioComponent } from './components/usuario/usuario/usuario.component
 import { UsuarioUpdateComponent } from './components/usuario/usuario-update/usuario-update.component';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { ModalAlertaComponent } from './views/template/modal-alerta/modal-alerta.component';
+import {MatDatepickerModule} from '@angular/material/datepicker'
+import { MatNativeDateModule } from '@angular/material/core';
+
 
 registerLocaleData(localePt);
 
@@ -80,6 +84,7 @@ registerLocaleData(localePt);
     ArquivoComponent,
     UsuarioComponent,
     UsuarioUpdateComponent,
+    ModalAlertaComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,7 +114,9 @@ registerLocaleData(localePt);
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
-   
+    MatExpansionModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent]

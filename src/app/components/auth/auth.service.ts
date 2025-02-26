@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map, catchError } from 'rxjs/operators';
+import { Usuario } from 'src/app/models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class AuthService {
   isLoggedIn(): boolean {
     const token = localStorage.getItem('token');
     // return !!token; 
-   // const token = this.getToken(); //codigo verificar depois essa parte aqqui
+    // const token = this.getToken(); //codigo verificar depois essa parte aqqui
     return !!token; // Retorna true se houver um token válido, false caso contrário
   }
 
@@ -62,5 +63,40 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem('token');
   }
+
+  updateUser(id: number, updatedData: any): Observable<Usuario> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+
+    return this.http.put<Usuario>(`http://localhost:8080/usuario/update/${id}`, updatedData, {headers});
+  }
+
+
+  verifyCurrentPassword(senhaAtual: string): Observable<any> {
+    const user = this.getUser();
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+
+    if (!user) {
+      return new Observable(observer => {
+        observer.error('Usuário não encontrado');
+        observer.complete();
+      });
+    }
+
+    return this.http.post<any>(`${this.loginUrl}/verify-password`, {
+      email: user.email,
+      senhaAtual
+    }, { headers }).pipe(
+      catchError(error => {
+        this.showMessage('Erro ao verificar a senha atual');
+        return new Observable(observer => {
+          observer.error(error);
+          observer.complete();
+        });
+      })
+    );
+  }
+
 
 }

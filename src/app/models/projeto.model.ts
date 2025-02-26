@@ -3,7 +3,7 @@ export interface Projeto {
     nome: string;
     descricao: string;
     dataCriacao?: Date;
-    dataInicio: Date;
-    dataFim: Date | null;
+    dataInicio: any | null;
+    dataFim: any | null;
   }
   

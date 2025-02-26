@@ -2,8 +2,8 @@ export interface Tarefa {
     id?: number;
     nome: string;
     observacoes: string;
-    dataCriacao?: Date;
-    dataEntrega?: Date| null;
+    dataCriacao?: any | null;
+    dataEntrega?: any| null;
     projetoId?: number;
     statusId: number;
     usuarioId?: number;

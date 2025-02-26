@@ -3,7 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Tarefa } from 'src/app/models/tarefa.model';
-import { dateRangeValidator, startDateValidator } from 'src/app/core/validator/date-validator';
+import { dateRangeValidator, startDateValidator} from 'src/app/core/validator/date-validator';
 
 @Component({
   selector: 'app-task-create',
@@ -23,7 +23,9 @@ export class TaskCreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private tarefaService: TaskService,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ){ this.projetoId = data.projetoId;}
+  ) {
+    this.projetoId = data.projetoId;
+  }
 
   ngOnInit(): void {
     this.novaTarefaForm = this.formBuilder.group({
@@ -31,42 +33,36 @@ export class TaskCreateComponent implements OnInit {
       observacoes: ['', Validators.required],
       dataCriacao: ['', [startDateValidator]],
       dataEntrega: [''],
-      statusId: [1, Validators.required], // Definindo o status padrão como 1 (Analise)
+      semDataInicio: [false],  // Adicionando os campos de checkbox ao FormGroup
+      semDataEntrega: [false],
+      statusId: [1, Validators.required],
       usuarioId: [null]
-    },{ validators: dateRangeValidator });
-    
-    this.novaTarefaForm.get('semDataInicio')?.valueChanges.subscribe((checked) => {
-      this.toggleDataInicio(checked);
-    });
+    }, { validators: dateRangeValidator });
 
-    this.novaTarefaForm.get('semDataEntrega')?.valueChanges.subscribe((checked) => {
-      this.toggleDataEntrega(checked);
-    });
-
-    this.idDoProjeto = this.projetoId; // importante 
+    this.idDoProjeto = this.projetoId;
   }
 
   salvarTarefa() {
     if (this.novaTarefaForm.valid) {
-      const usuarioId = this.novaTarefaForm.get('usuarioId')?.value; 
-      console.log('usuario id --------', usuarioId);
+      const usuarioId = this.novaTarefaForm.get('usuarioId')?.value;
+
+      const dataInicioValue = this.semDataInicio ? null : this.converterParaTimestamp(this.novaTarefaForm.get('dataCriacao')!.value);
+      const dataEntregaValue = this.semDataEntrega ? null : this.converterParaTimestamp(this.novaTarefaForm.get('dataEntrega')!.value);
+  
 
       const novaTarefa: Tarefa = {
         nome: this.novaTarefaForm.get('nome')!.value,
         observacoes: this.novaTarefaForm.get('observacoes')!.value,
-        dataCriacao: new Date(), // Definindo a data de criação como a data atual
-        dataEntrega: this.semDataEntrega ? undefined : this.novaTarefaForm.get('dataEntrega')!.value,
-        projetoId: this.projetoId, 
+        dataCriacao: dataInicioValue,
+        dataEntrega: dataEntregaValue,
+        projetoId: this.projetoId,
         statusId: this.novaTarefaForm.get('statusId')!.value,
-        usuarioId: usuarioId 
+        usuarioId: usuarioId
       };
 
-      console.log('Objeto tarefa antes de salvar:', novaTarefa);
       this.tarefaService.create(novaTarefa).subscribe(
         data => {
           this.tarefaService.showMessage("Tarefa cadastrada com sucesso!");
-          console.log('data ?()     ---',data);
-          console.log('data ?()     ---',novaTarefa);
           this.closeDialog();
           this.reload();
         },
@@ -80,11 +76,11 @@ export class TaskCreateComponent implements OnInit {
 
   onUsuarioSelecionado(usuarioId: number): void {
     this.selectedUserId = usuarioId;
-    this.novaTarefaForm.get('usuarioId')?.setValue(this.selectedUserId); // Atualiza o valor no formulário
+    this.novaTarefaForm.get('usuarioId')?.setValue(this.selectedUserId);
   }
 
   reload(): void {
-     window.location.reload();
+    window.location.reload();
   }
 
   closeDialog(): void {
@@ -92,25 +88,38 @@ export class TaskCreateComponent implements OnInit {
   }
 
   toggleDataInicio(checked: boolean): void {
-      this.semDataInicio = checked;
-      const dataInicioControl = this.novaTarefaForm.get('dataInicio');
-      if (checked) {
-        dataInicioControl?.clearValidators();
-      } else {
-        dataInicioControl?.setValidators([Validators.required, startDateValidator]);
-      }
-      dataInicioControl?.updateValueAndValidity();
+    this.semDataInicio = checked;
+    this.novaTarefaForm.patchValue({ semDataInicio: checked });
+
+    const dataInicioControl = this.novaTarefaForm.get('dataCriacao');
+    if (checked) {
+      dataInicioControl?.clearValidators();
+      dataInicioControl?.setValue('');
+    } else {
+      dataInicioControl?.setValidators([Validators.required, startDateValidator]);
     }
+    dataInicioControl?.updateValueAndValidity();
+  }
+
+  toggleDataEntrega(checked: boolean): void {
+    this.semDataEntrega = checked;
+    this.novaTarefaForm.patchValue({ semDataEntrega: checked });
+
+    const dataEntregaControl = this.novaTarefaForm.get('dataEntrega');
+    if (checked) {
+      dataEntregaControl?.clearValidators();
+      dataEntregaControl?.setValue('');
+    } else {
+      dataEntregaControl?.setValidators(Validators.required);
+    }
+    dataEntregaControl?.updateValueAndValidity();
+  }
+
+  converterParaTimestamp(dataString: string | null): number | null {
+    if (!dataString) return null;
   
-    toggleDataEntrega(checked: boolean): void {
-      this.semDataEntrega = checked;
-      const dataEntregaControl = this.novaTarefaForm.get('dataEntrega');
-      if (checked) {
-        dataEntregaControl?.clearValidators();
-        dataEntregaControl?.setValue('');
-      } else {
-        dataEntregaControl?.setValidators(Validators.required);
-      }
-      dataEntregaControl?.updateValueAndValidity();
-    }
+    const [ano, mes, dia] = dataString.split('-').map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    return data.getTime(); // Retorna o timestamp em milissegundos
+  }
 }

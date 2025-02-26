@@ -6,9 +6,9 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './core/guard/AuthGuard';
 import { ProjectsComponent } from './components/project/projects/projects.component';
-import { DashProjectComponent } from './components/dash-project/dash-project.component';
 import { AgendaComponent } from './components/agenda/agenda.component';
 import { ArquivoComponent } from './components/arquivo/arquivo.component';
+import { DashProjectComponent } from './components/dash-project/dash-project.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },

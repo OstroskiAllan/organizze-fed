@@ -1,28 +1,70 @@
 <app-header></app-header>
 <div class="container-conteudo">
-<nav-bar class="nav-bar"></nav-bar>
-<div class="content">
+  <nav-bar class="nav-bar"></nav-bar>
+  <div class="content" style="background-color: #eeeeee;">
     <mat-card class="dash mat-elevation-z3">
-
-        <mat-card-title class="title">
-            Agenda de projetos!
-        </mat-card-title>
-        <mat-card-subtitle class="subtitle">
-            Sistema para teste de Agenda!
-        </mat-card-subtitle>
-        <br>
+      <mat-card-title class="title">
+        Agenda de Projetos e Tarefas
+      </mat-card-title>
+      <mat-card-subtitle class="subtitle">
+        Aqui estão os projetos e tarefas com datas próximas.
+      </mat-card-subtitle>
+      <br>
     </mat-card>
     <br>
     <mat-card class="dash mat-elevation-z3">
+      <div class="agenda-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Data</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="dataFiltro" (dateChange)="onDataFiltroChange($event)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
 
-        <mat-card-subtitle class="subtitle">
-            Sem projetos com data no momento
-        </mat-card-subtitle>
 
-        <button mat-raised-button routerLink="/projects" color="primary">
-            Novo Projeto
-        </button>
+        <!-- Seção de Projetos Próximos -->
+        <h2>Projetos Próximos da Data de Entrega</h2>
+        <div *ngIf="getProjetosProximosDaData().length > 0; else semProjetosProximos">
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let projeto of getProjetosProximosDaData()">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ projeto.nome }}</mat-panel-title>
+                <mat-panel-description>
+                  Data de Término: {{ projeto.dataFim | date:'dd/MM/yyyy' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>{{ projeto.descricao }}</p>
+              <button mat-button (click)="abrirProjeto(projeto.id)">Abrir Projeto</button>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <ng-template #semProjetosProximos>
+          <p>Nenhum projeto com data próxima encontrado.</p>
+        </ng-template>
+
+        <!-- Seção de Tarefas Próximas -->
+        <h2>Tarefas Próximas da Data de Entrega</h2>
+        <div *ngIf="getTarefasProximasDaData().length > 0; else semTarefasProximas">
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let tarefa of getTarefasProximasDaData()">
+              <mat-expansion-panel-header>
+                <mat-panel-title>{{ tarefa.nome }}</mat-panel-title>
+                <mat-panel-description>
+                  Data de Entrega: {{ tarefa.dataEntrega | date:'dd/MM/yyyy' }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>{{ tarefa.observacoes }}</p>
+              <p>Projeto: {{ getNomeProjeto(tarefa.projetoId) }}</p>
+              <button mat-button (click)="viewTaskDetails(tarefa)">Ver mais</button>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+
+        
+        <ng-template #semTarefasProximas>
+          <p>Nenhuma tarefa com data próxima encontrada.</p>
+        </ng-template>
+      </div>
     </mat-card>
-    
-</div>
+  </div>
 </div>

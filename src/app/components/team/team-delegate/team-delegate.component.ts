@@ -19,7 +19,7 @@ export class TeamDelegateComponent implements OnInit {
   team: UsuarioProjeto[] = [];
   projetoId!: number;
   form: FormGroup;
-  selectedUserId!: number;
+  selectedUserId!: number | null
   tarefa: any;
 
   constructor(
@@ -102,7 +102,12 @@ export class TeamDelegateComponent implements OnInit {
     );
   }
 
-  
+  removerResponsavel() {
+    this.selectedUserId = null;
+    this.form.get('selectedMember')?.setValue(null);  // Limpa o valor do formulário
+    this.atualizarTarefa();  // Atualiza a tarefa sem um responsável
+    window.location.reload();
+    }
   // get selectedMember() {
   //   return this.form.get('selectedMember')?.value;
   // }
